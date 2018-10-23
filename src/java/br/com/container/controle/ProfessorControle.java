@@ -8,6 +8,7 @@ package br.com.container.controle;
 import br.com.container.dao.HibernateUtil;
 import br.com.container.dao.ProfessorDao;
 import br.com.container.dao.ProfessorDaoImpl;
+import br.com.container.modelo.Endereco;
 import br.com.container.modelo.Professor;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ProfessorControle implements Serializable {
 
     private Session session;
     private ProfessorDao dao;
-
+    private Endereco endereco;
     private Professor prof;
     private List<Professor> profs;
     private DataModel<Professor> modelProfs;
@@ -81,34 +82,33 @@ public class ProfessorControle implements Serializable {
         }
     }
 
-    public void salvar() {
-        dao = new ProfessorDaoImpl();
-        try {
-            abreSessao();
-            prof.setDisciplinas(parseDisciplinas());
-            dao.salvarOuAlterar(prof, session);
-            Mensagem.salvar("Professor " + prof.getNome());
-        } catch (Exception ex) {
-            Mensagem.mensagemError("Erro ao salvar\nTente novamente");
-            System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
-        } finally {
-            prof = new Professor();
-            prof.setWhatsapp(true);
-            disciplinas = new ArrayList();
-            session.close();
-        }
-    }
+//    public void salvar() {
+//        dao = new ProfessorDaoImpl();
+//        try {
+//            abreSessao();
+//            prof.setDisciplinas(parseDisciplinas());
+//            dao.salvarOuAlterar(prof, session);
+//            Mensagem.salvar("Professor " + prof.getNome());
+//        } catch (Exception ex) {
+//            Mensagem.mensagemError("Erro ao salvar\nTente novamente");
+//            System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
+//        } finally {
+//            prof = new Professor();
+//            prof.setWhatsapp(true);
+//            disciplinas = new ArrayList();
+//            session.close();
+//        }
+//    }
     
     public void salvar() {
         dao = new ProfessorDaoImpl();
         abreSessao();
         try {
             prof.setEndereco(endereco);
-            endereco.setPessoa(funcionario);
-            dao.salvarOuAlterar(funcionario, sessao);
-            Mensagem.salvar("Funcionário " + funcionario.getNome());
-            funcionario = null;
-            funcao = null;
+            endereco.setPessoa(prof);
+            dao.salvarOuAlterar(prof, session);
+            Mensagem.salvar("Professor " + prof.getNome());
+            prof = null;
             endereco = null;
 
         } catch (HibernateException e) {
@@ -116,12 +116,12 @@ public class ProfessorControle implements Serializable {
             if (isLoginDuplicado) {
                 Mensagem.campoExiste("E-mail");
             }
-            System.out.println("Erro ao salvar funcionario " + e.getMessage());
+            System.out.println("Erro ao salvar professor " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Erro no salvar funcionarioDao Controle "
+            System.out.println("Erro no salvar professorDao Controle "
                     + e.getMessage());
         } finally {
-            sessao.close();
+            session.close();
         }
     }
 
