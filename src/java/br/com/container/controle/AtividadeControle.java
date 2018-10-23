@@ -72,9 +72,9 @@ public class AtividadeControle implements Serializable {
         graficoSalas.addSeries(sala);
 
         graficoSalas.setTitle("Reservas de Salas");
-        graficoSalas.setLegendPosition("ne");
+        graficoSalas.setLegendPosition("nw");
         graficoSalas.setMouseoverHighlight(true);
-        graficoSalas.setShowDatatip(false);
+        graficoSalas.setShowDatatip(true);
         graficoSalas.setShowPointLabels(true);
         graficoSalas.setAnimate(true);
         graficoSalas.setZoom(true);

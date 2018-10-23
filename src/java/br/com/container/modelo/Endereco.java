@@ -34,13 +34,13 @@ public class Endereco implements Serializable {
     private String obs;
 
     @OneToOne
-    @JoinColumn(name = "idFuncionario")
-    private Funcionario funcionario;
-
+    @JoinColumn(name = "idPessoa")
+    private Pessoa pessoa;
+    
     public Endereco() {
     }
 
-    public Endereco(Long id, String logradouro, int numero, String bairro, String cidade, String complemento, String obs, Funcionario funcionario) {
+    public Endereco(Long id, String logradouro, int numero, String bairro, String cidade, String complemento, String obs) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -48,7 +48,14 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
         this.complemento = complemento;
         this.obs = obs;
-        this.funcionario = funcionario;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public Long getId() {
@@ -105,14 +112,6 @@ public class Endereco implements Serializable {
 
     public void setObs(String obs) {
         this.obs = obs;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
     }
 
     @Override

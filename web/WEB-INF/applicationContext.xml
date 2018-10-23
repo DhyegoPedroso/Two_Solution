@@ -26,10 +26,10 @@
     </authentication-manager>
  
     <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <b:property name="url" value="jdbc:mysql://localhost:3306/senac_teste" />
+        <b:property name="url" value="jdbc:mysql://localhost:3306/twosolutionsenac_teste" />
         <b:property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <b:property name="username" value="root" />
-        <b:property name="password" value="3033" />
+        <b:property name="password" value="" />
     </b:bean>
  
 </b:beans>

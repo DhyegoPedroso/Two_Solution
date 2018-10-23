@@ -105,10 +105,22 @@
 
                     <p:outputLabel for="email" value="Email:" />
                     <p:inputText id="email" value="#{profC.prof.email}" style="width: 100%; max-width: 600px;"/>
+                    
+                    <p:outputLabel for="logradouro" value="Logradouro:"/>
+                    <p:inputText id="logradouro" value="#{professorC.endereco.logradouro}"/>
 
-                    <p:outputLabel for="endereco" value="Endereço :" />
-                    <p:inputTextarea id="endereco" value="#{profC.prof.endereco}"  cols="40" style="width: 100%; max-width: 600px;"/>
+                    <p:outputLabel for="numero" value="Número:"/>
+                    <p:inputText id="numero" value="#{professorC.endereco.numero}"/>
 
+                    <p:outputLabel for="complemento" value="Complemento"/>
+                    <p:inputText id="complemento" value="#{professorC.endereco.complemento}"/>
+
+                    <p:outputLabel for="bairro" value="Bairro:"/>
+                    <p:inputText id="bairro" value="#{professorC.endereco.bairro}"/>
+
+                    <p:outputLabel for="cidade" value="Cidade:"/>
+                    <p:inputText id="cidade" value="#{professorC.endereco.cidade}"/>
+                    
                     <p:commandButton id="btAddDisc" value="Adicionar Disciplina" actionListener="#{profC.adicionarDisciplina()}" update="@form" />
                 </p:panelGrid>
                 <p:panelGrid id="painelDisciplinas" columns="1" layout="grid" styleClass="painel_grid_noborder" >

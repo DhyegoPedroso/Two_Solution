@@ -120,7 +120,7 @@ public class FuncionarioControle implements Serializable {
         abreSessao();
         try {
             funcionario.setEndereco(endereco);
-            endereco.setFuncionario(funcionario);
+            endereco.setPessoa(funcionario);
             funcionarioDao.salvarOuAlterar(funcionario, sessao);
             Mensagem.salvar("Funcionário " + funcionario.getNome());
             funcionario = null;

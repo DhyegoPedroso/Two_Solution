@@ -98,6 +98,32 @@ public class ProfessorControle implements Serializable {
             session.close();
         }
     }
+    
+    public void salvar() {
+        dao = new ProfessorDaoImpl();
+        abreSessao();
+        try {
+            prof.setEndereco(endereco);
+            endereco.setPessoa(funcionario);
+            dao.salvarOuAlterar(funcionario, sessao);
+            Mensagem.salvar("Funcionário " + funcionario.getNome());
+            funcionario = null;
+            funcao = null;
+            endereco = null;
+
+        } catch (HibernateException e) {
+            boolean isLoginDuplicado = e.getCause().getMessage().contains("'email_UNIQUE'");
+            if (isLoginDuplicado) {
+                Mensagem.campoExiste("E-mail");
+            }
+            System.out.println("Erro ao salvar funcionario " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro no salvar funcionarioDao Controle "
+                    + e.getMessage());
+        } finally {
+            sessao.close();
+        }
+    }
 
     public void alterarProf() {
         mostraToolbar = !mostraToolbar;
