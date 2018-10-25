@@ -14,6 +14,7 @@ import br.com.container.modelo.Endereco;
 import br.com.container.modelo.Funcao;
 import br.com.container.modelo.Funcionario;
 import br.com.container.modelo.Perfil;
+import br.com.container.modelo.Pessoa;
 import br.com.container.modelo.Planejamento;
 import br.com.container.modelo.Professor;
 import br.com.container.modelo.Reserva;
@@ -35,6 +36,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration cfg = new Configuration();
+            cfg.addAnnotatedClass(Pessoa.class);
             cfg.addAnnotatedClass(Perfil.class);
             cfg.addAnnotatedClass(Usuario.class);
             cfg.addAnnotatedClass(Sala.class);

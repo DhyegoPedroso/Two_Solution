@@ -9,31 +9,22 @@
 
     <ui:define name="conteudo">
         <h1 class="jr-titulo1">Professor</h1>
-        
 
         <h:form id="form_pesquisa">
-
-            <p:toolbar id="toolbar_pesquisa" styleClass="toolbar" rendered="#{!profC.mostraToolbar}"  >
-                <p:toolbarGroup  >
-                    <p:commandButton value="Pesquisar" actionListener="#{profC.pesquisar}"
-                                     update="@form" process="@this panelGridPesq" />
-                    <p:separator></p:separator>
-                    <p:commandButton value="Novo" actionListener="#{profC.mudaToolbar}" update="@form" global="false"  />
-                </p:toolbarGroup>
-            </p:toolbar>
-
-            <p:toolbar id="toolbar_salvar" styleClass="toolbar" rendered="#{profC.mostraToolbar}">
-                <p:toolbarGroup  >
-                    <p:commandButton value="Salvar" action="#{profC.salvar()}" update="aba_alterar" />
-                    <p:separator></p:separator>
-                    <p:commandButton value="Cancelar" actionListener="#{profC.mudaToolbar}" immediate="true"
-                                     update="@form" global="false" />
-                </p:toolbarGroup>
-            </p:toolbar>
 
             <p:messages id="mens"  autoUpdate="true" />
 
             <h:panelGroup id="aba_pesquisa" rendered="#{!profC.mostraToolbar}" >
+
+                <p:toolbar id="toolbar_pesquisa" styleClass="toolbar">
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Pesquisar" actionListener="#{profC.pesquisar}"
+                                         update="@form" process="@this panelGridPesq" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Novo" actionListener="#{profC.mudaToolbar}" update="@form" global="false"  />
+                    </p:toolbarGroup>
+                </p:toolbar>
+
                 <p:panelGrid id="panelGridPesq" columns="2" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-8" styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="pesqNome" value="Nome Professor:"/>
@@ -65,7 +56,6 @@
                         <p:selectBooleanButton value="#{prof.whatsapp}" disabled="true" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
                     </p:column>
 
-
                     <p:column headerText="Alterar" class="centralizado tabela_botao_usuario"  >
                         <p:commandButton icon="ui-icon-pencil" title="Alterar"
                                          process="@this" update="@form" actionListener="#{profC.alterarProf}">
@@ -90,51 +80,85 @@
             </p:confirmDialog>
 
             <h:panelGroup id="aba_alterar" rendered="#{profC.mostraToolbar}">
-                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
-                             styleClass="painel_grid_noborder" >
-                    <p:outputLabel for="nome" value="Nome :" />
-                    <p:inputText id="nome" value="#{profC.prof.nome}" required="true" size="40" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="foneMovel" value="Fone Móvel" />
-                    <p:inputMask  id="foneMovel" value="#{profC.prof.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
-                    <p:outputLabel for="btWhats" value="Móvel tem Whatsapp"/>
-                    <p:selectBooleanButton id="btWhats" value="#{profC.prof.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
+                <p:toolbar id="toolbar_salvar" styleClass="toolbar">
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Salvar" action="#{profC.salvar()}" update="aba_alterar" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Cancelar" actionListener="#{profC.mudaToolbar}" immediate="true"
+                                         update="@form" global="false" />
+                    </p:toolbarGroup>
+                </p:toolbar>
 
-                    <p:outputLabel for="foneFixo" value="Fone fixo:" />
-                    <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="false" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
+                <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px; margin-top: 10px">
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
+                                 styleClass="painel_grid_noborder" >
 
-                    <p:outputLabel for="email" value="Email:" />
-                    <p:inputText id="email" value="#{profC.prof.email}" style="width: 100%; max-width: 600px;"/>
-                    
-                    <p:outputLabel for="logradouro" value="Logradouro:"/>
-                    <p:inputText id="logradouro" value="#{professorC.endereco.logradouro}"/>
+                        <p:outputLabel for="nome" value="Nome :" />
+                        <p:inputText id="nome" value="#{profC.prof.nome}" required="true" size="40" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="numero" value="Número:"/>
-                    <p:inputText id="numero" value="#{professorC.endereco.numero}"/>
+                        <p:outputLabel for="foneMovel" value="Fone Móvel" />
+                        <p:inputMask  id="foneMovel" value="#{profC.prof.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:outputLabel for="btWhats" value="Móvel tem Whatsapp"/>
+                        <p:selectBooleanButton id="btWhats" value="#{profC.prof.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 
-                    <p:outputLabel for="complemento" value="Complemento"/>
-                    <p:inputText id="complemento" value="#{professorC.endereco.complemento}"/>
+                        <p:outputLabel for="foneFixo" value="Fone fixo:" />
+                        <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="bairro" value="Bairro:"/>
-                    <p:inputText id="bairro" value="#{professorC.endereco.bairro}"/>
+                        <p:outputLabel for="email" value="Email:" />
+                        <p:inputText id="email" value="#{profC.prof.email}" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="cidade" value="Cidade:"/>
-                    <p:inputText id="cidade" value="#{professorC.endereco.cidade}"/>
-                    
-                    <p:commandButton id="btAddDisc" value="Adicionar Disciplina" actionListener="#{profC.adicionarDisciplina()}" update="@form" />
-                </p:panelGrid>
-                <p:panelGrid id="painelDisciplinas" columns="1" layout="grid" styleClass="painel_grid_noborder" >
-                    <ui:repeat value="#{profC.disciplinas}" var="disciplina" varStatus="status">
-                        <p:panelGrid columns="3" layout="grid" styleClass="painel_grid_noborder" >
-                            <h:outputText value="Nome Disciplina"/>
-                            <p:inputText value="#{profC.disciplinas[status.index]}" />
-                            <p:commandButton id="btRemDisc" value="Remover" actionListener="#{profC.removerDisciplina(status.index)}" update="@form"/>
-                        </p:panelGrid>
-                    </ui:repeat>
-                </p:panelGrid>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Endereço" style="margin-bottom:20px">
+
+                    <p:panelGrid class="formStyle" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
+                                 styleClass="painel_grid_noborder" >
+
+                        <p:outputLabel for="logradouro" value="Logradouro:"/>
+                        <p:inputText id="logradouro" value="#{profC.endereco.logradouro}"/>
+
+                        <p:outputLabel for="numero" value="Número:"/>
+                        <p:inputText id="numero" value="#{profC.endereco.numero}"/>
+
+                        <p:outputLabel for="complemento" value="Complemento"/>
+                        <p:inputText id="complemento" value="#{profC.endereco.complemento}"/>
+
+                        <p:outputLabel for="bairro" value="Bairro:"/>
+                        <p:inputText id="bairro" value="#{profC.endereco.bairro}"/>
+
+                        <p:outputLabel for="cidade" value="Cidade:"/>
+                        <p:inputText id="cidade" value="#{profC.endereco.cidade}"/>
+
+                        <p:outputLabel for="obs" value="Observação:"/>
+                        <p:inputText id="obs" value="#{profC.endereco.obs}"/>
+
+                    </p:panelGrid>
+
+                </p:fieldset>
+
+
+                <p:fieldset legend="Diciplina" style="margin-bottom:20px">
+                    <p:commandButton id="btAddDisc" value="Adicionar Disciplina" actionListener="#{profC.adicionarDisciplina()}" update="@form" 
+                                     style="margin-bottom: 20px"/>
+                    <p:panelGrid id="painelDisciplinas" columns="1" layout="grid" styleClass="painel_grid_noborder" >
+
+                        <ui:repeat value="#{profC.disciplinas}" var="disciplina" varStatus="status">
+                            <p:panelGrid columns="3" layout="grid" styleClass="painel_grid_noborder" >
+                                <h:outputText value="Nome Disciplina"/>
+                                <p:inputText value="#{profC.disciplinas[status.index]}" />
+                                <p:commandButton id="btRemDisc" value="Remover" actionListener="#{profC.removerDisciplina(status.index)}" update="@form"/>
+                            </p:panelGrid>
+                        </ui:repeat>
+
+                    </p:panelGrid>
+                </p:fieldset>
+
             </h:panelGroup>
 
         </h:form>
+
     </ui:define>
 
 </ui:composition>
