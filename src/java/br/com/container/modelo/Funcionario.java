@@ -2,11 +2,9 @@ package br.com.container.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,11 +21,11 @@ public class Funcionario extends Pessoa implements Serializable {
 
     @Temporal(TemporalType.DATE)
     private Date dtContratacao;
-    
+
     @ManyToOne
     @JoinColumn(name = "idFuncao")
     private Funcao funcao;
-    
+
     public Funcionario() {
     }
 
@@ -35,8 +33,6 @@ public class Funcionario extends Pessoa implements Serializable {
         super(id, nome, email, foneFixo, foneMovel, whatsapp);
         this.dtContratacao = dtContratacao;
     }
-
-  
 
     public Funcao getFuncao() {
         return funcao;
@@ -53,7 +49,5 @@ public class Funcionario extends Pessoa implements Serializable {
     public void setDtContratacao(Date dtContratação) {
         this.dtContratacao = dtContratação;
     }
-
-
 
 }

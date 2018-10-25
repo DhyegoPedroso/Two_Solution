@@ -36,6 +36,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration cfg = new Configuration();
+            cfg.addAnnotatedClass(Pessoa.class);
             cfg.addAnnotatedClass(Perfil.class);
             cfg.addAnnotatedClass(Usuario.class);
             cfg.addAnnotatedClass(Sala.class);
@@ -50,7 +51,6 @@ public class HibernateUtil {
             cfg.addAnnotatedClass(Curso.class);
             cfg.addAnnotatedClass(Disciplina.class);
             cfg.addAnnotatedClass(Endereco.class);
-            cfg.addAnnotatedClass(Pessoa.class);
             
 
             cfg.configure("/br/com/container/dao/hibernate.cfg.xml");
