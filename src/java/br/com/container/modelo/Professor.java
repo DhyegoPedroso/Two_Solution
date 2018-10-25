@@ -22,17 +22,12 @@ import javax.persistence.Table;
 public class Professor extends Pessoa implements Serializable {
 
     private String disciplinas;
-    
-    @OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
-    private Pessoa pessoa;
-    
     public Professor() {
     }
 
-    public Professor(String disciplinas, Pessoa pessoa, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp, Endereco endereco) {
-        super(id, nome, email, foneFixo, foneMovel, whatsapp, endereco);
+    public Professor(String disciplinas, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp) {
+        super(id, nome, email, foneFixo, foneMovel, whatsapp);
         this.disciplinas = disciplinas;
-        this.pessoa = pessoa;
     }
 
     public String getDisciplinas() {
@@ -43,12 +38,5 @@ public class Professor extends Pessoa implements Serializable {
         this.disciplinas = disciplinas;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
 
 }

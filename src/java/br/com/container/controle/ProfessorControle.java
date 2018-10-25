@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.container.controle;
 
 import br.com.container.dao.HibernateUtil;
@@ -36,8 +31,9 @@ public class ProfessorControle implements Serializable {
 
     private Session session;
     private ProfessorDao dao;
-    private Endereco endereco;
+
     private Professor prof;
+    private Endereco endereco;
     private List<Professor> profs;
     private DataModel<Professor> modelProfs;
     private List<String> disciplinas;
@@ -82,45 +78,24 @@ public class ProfessorControle implements Serializable {
         }
     }
 
-//    public void salvar() {
-//        dao = new ProfessorDaoImpl();
-//        try {
-//            abreSessao();
-//            prof.setDisciplinas(parseDisciplinas());
-//            dao.salvarOuAlterar(prof, session);
-//            Mensagem.salvar("Professor " + prof.getNome());
-//        } catch (Exception ex) {
-//            Mensagem.mensagemError("Erro ao salvar\nTente novamente");
-//            System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
-//        } finally {
-//            prof = new Professor();
-//            prof.setWhatsapp(true);
-//            disciplinas = new ArrayList();
-//            session.close();
-//        }
-//    }
-    
     public void salvar() {
         dao = new ProfessorDaoImpl();
         abreSessao();
         try {
+            prof.setDisciplinas(parseDisciplinas());
             prof.setEndereco(endereco);
             endereco.setPessoa(prof);
             dao.salvarOuAlterar(prof, session);
             Mensagem.salvar("Professor " + prof.getNome());
             prof = null;
             endereco = null;
-
-        } catch (HibernateException e) {
-            boolean isLoginDuplicado = e.getCause().getMessage().contains("'email_UNIQUE'");
-            if (isLoginDuplicado) {
-                Mensagem.campoExiste("E-mail");
-            }
-            System.out.println("Erro ao salvar professor " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erro no salvar professorDao Controle "
-                    + e.getMessage());
+        } catch (HibernateException ex) {
+            Mensagem.mensagemError("Erro ao salvar\nTente novamente");
+            System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
         } finally {
+            prof = new Professor();
+            prof.setWhatsapp(true);
+            disciplinas = new ArrayList();
             session.close();
         }
     }
@@ -128,7 +103,9 @@ public class ProfessorControle implements Serializable {
     public void alterarProf() {
         mostraToolbar = !mostraToolbar;
         prof = modelProfs.getRowData();
+        prof.getEndereco();
         parseDisciplinas(prof.getDisciplinas());
+        endereco = prof.getEndereco();
     }
 
     private String parseDisciplinas() {
@@ -245,5 +222,16 @@ public class ProfessorControle implements Serializable {
 
     public void setDisciplinas(List<String> disciplinas) {
         this.disciplinas = disciplinas;
+    }
+
+    public Endereco getEndereco() {
+        if (endereco == null) {
+            endereco = new Endereco();
+        }
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 }

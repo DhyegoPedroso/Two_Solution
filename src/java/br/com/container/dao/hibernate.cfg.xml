@@ -2,16 +2,13 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
+      
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <!--   servidor local-->
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twosolutionsenac_teste</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/senac_teste</property>
     <property name="hibernate.connection.username">root</property>
-    <!--<property name="hibernate.connection.password">root</property>-->
-    <!--servidor web-->
-    <!--    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/silvio_neb?autoReconnect=true</property>
-    <property name="hibernate.connection.username">silvio_neb</property>
-    <property name="hibernate.connection.password">silvio_neb</property>   -->
+    <property name="hibernate.connection.password">3033</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
     <!--  Usando as configurações do C3PO para pool de conexões -->

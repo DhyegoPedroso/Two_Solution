@@ -21,8 +21,6 @@ import javax.persistence.TemporalType;
 @PrimaryKeyJoinColumn(name = "idPessoa")
 public class Funcionario extends Pessoa implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
     @Temporal(TemporalType.DATE)
     private Date dtContratacao;
     
@@ -30,18 +28,15 @@ public class Funcionario extends Pessoa implements Serializable {
     @JoinColumn(name = "idFuncao")
     private Funcao funcao;
     
-    @OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
-    private Pessoa pessoa;
-    
     public Funcionario() {
     }
 
-    public Funcionario(Date dtContratacao, Funcao funcao, Pessoa pessoa, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp, Endereco endereco) {
-        super(id, nome, email, foneFixo, foneMovel, whatsapp, endereco);
+    public Funcionario(Date dtContratacao, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp) {
+        super(id, nome, email, foneFixo, foneMovel, whatsapp);
         this.dtContratacao = dtContratacao;
-        this.funcao = funcao;
-        this.pessoa = pessoa;
     }
+
+  
 
     public Funcao getFuncao() {
         return funcao;
@@ -59,13 +54,6 @@ public class Funcionario extends Pessoa implements Serializable {
         this.dtContratacao = dtContratação;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
 
 
 }

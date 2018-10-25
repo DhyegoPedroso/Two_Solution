@@ -16,36 +16,19 @@
 
         <h:form id="form_pesquisa">
 
-            <!--mostra a toolbar se mostra_toolbar == true-->
-            <p:toolbar styleClass="toolbar" rendered="#{!funcionarioC.mostra_toolbar}">
-                <p:toolbarGroup  >
-                    <p:commandButton value="Pesquisar" actionListener="#{funcionarioC.pesquisar()}"
-                                     update="dadosFuncionario" process="@this panelGridPesq" />
-                    <p:separator></p:separator>
-                    <p:commandButton value="Novo" actionListener="#{funcionarioC.novo}" update="@form" global="false"  />
-                </p:toolbarGroup>
-            </p:toolbar>
-
-            <!--mostra a toolbar se mostra_toolbar == false-->
-            <p:toolbar id="toolbar_pesquisa" styleClass="toolbar" rendered="#{funcionarioC.mostra_toolbar}">
-                <p:toolbarGroup  >
-                    <p:commandButton value="Salvar" action="#{funcionarioC.salvar()}" update="panelGrop" />
-                    <p:separator></p:separator>
-                    <p:commandButton value="Cancelar" actionListener="#{funcionarioC.novaPesquisa}" immediate="true"
-                                     update="@form" global="false" />
-                </p:toolbarGroup>
-
-                <p:toolbarGroup align="right">
-
-
-                </p:toolbarGroup>
-
-            </p:toolbar>
-
             <p:messages id="mens" autoUpdate="true" />
 
-            <!--inicio da tela de pesquisa-->
             <h:panelGroup id="aba1" rendered="#{!funcionarioC.mostra_toolbar}" >
+
+                <p:toolbar styleClass="toolbar">
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Pesquisar" actionListener="#{funcionarioC.pesquisar()}"
+                                         update="dadosFuncionario" process="@this panelGridPesq" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Novo" actionListener="#{funcionarioC.novo}" update="@form" global="false"  />
+                    </p:toolbarGroup>
+                </p:toolbar>
+
                 <p:panelGrid id="panelGridPesq" columns="2" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-5" styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="nome_pesquisa" value="Nome :" />
@@ -86,52 +69,7 @@
 
                 </p:dataTable>
 
-
-                <p:dialog header="Mais Info" widgetVar="dlg" modal="true" showEffect="clip" hideEffect="clip"
-                          resizable="false" height="400" width="400">
-
-                    <p:outputPanel style="text-align:center;">
-
-                        <h:panelGrid  columns="2"  cellpadding="5">
-
-                            <h:outputLabel for="nomeP" value="Nome: " />
-                            <h:outputText id="nomeP" value="#{funcionarioC.funcionario.nome}" />
-
-                            <h:outputLabel for="emailP" value="E-mail: " />
-                            <h:outputText id="emailP" value="#{funcionarioC.funcionario.email}"  />
-
-                            <h:outputLabel for="funcaoP" value="Função: " />
-                            <h:outputText id="funcaoP" value="#{funcionarioC.funcionario.funcao.nome}" />
-
-                            <h:outputLabel for="dtContratacaoP" value="Data Contratação: " />
-                            <h:outputText id="dtContratacaoP" value="#{funcionarioC.funcionario.dtContratacao}" />
-
-                            <h:outputLabel for="logradouroP" value="Logradouro: " />
-                            <h:outputText id="logradouroP" value="#{funcionarioC.funcionario.endereco.logradouro}"  />
-
-                            <h:outputLabel for="numeroP" value="Número: " />
-                            <h:outputText id="numeroP" value="#{funcionarioC.funcionario.endereco.numero}" />
-
-                            <h:outputLabel for="complementoP" value="Complemento: " />
-                            <h:outputText id="complementoP"  value="#{funcionarioC.funcionario.endereco.complemento}"/>
-
-                            <h:outputLabel for="bairroP" value="Bairro: " />
-                            <h:outputText id="bairroP" value="#{funcionarioC.funcionario.endereco.bairro}" />
-
-                            <h:outputLabel for="cidadeP" value="Cidade: " />
-                            <h:outputText id="cidadeP"  value="#{funcionarioC.funcionario.endereco.cidade}"/>
-
-                            <h:outputLabel for="obsP" value="Observação: " />
-                            <h:outputText id="obsP"  value="#{funcionarioC.funcionario.endereco.obs}"/>
-
-                        </h:panelGrid>
-
-                    </p:outputPanel>
-
-                </p:dialog>
-
             </h:panelGroup> 
-
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" 
@@ -139,53 +77,80 @@
                 <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" 
                                  icon="ui-icon-close" />
             </p:confirmDialog>
-            <!--fim da tela de pesquisa-->
 
-            <!--inicio da tela de cadastro (salvar e alterar)-->
             <h:panelGroup id="panelGrop" rendered="#{funcionarioC.mostra_toolbar}" >
-                <p:panelGrid class="formStyle" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
-                             styleClass="painel_grid_noborder" >
 
+                <p:toolbar id="toolbar_pesquisa" styleClass="toolbar">
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Salvar" action="#{funcionarioC.salvar()}" update="panelGrop" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Cancelar" actionListener="#{funcionarioC.novaPesquisa}" immediate="true"
+                                         update="@form" global="false" />
+                    </p:toolbarGroup>
+                </p:toolbar>
 
-                    <p:outputLabel for="nome" value="Nome :" />
-                    <p:inputText id="nome" value="#{funcionarioC.funcionario.nome}" required="true" style="width: 100%; max-width: 600px;"/>
+                <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px; margin-top: 10px">
 
-                    <p:outputLabel for="email" value="E-mail :" />
-                    <p:inputText id="email" value="#{funcionarioC.funcionario.email}" type="email"
-                                 required="true" style="width: 100%; max-width: 600px;"/>
+                    <p:panelGrid class="formStyle" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
+                                 styleClass="painel_grid_noborder" >
 
-                    <h:outputLabel for="funcao" value="Função " />
-                    <p:selectOneMenu styleClass="form-control" id="perfil" value="#{funcionarioC.funcao.id}" style="width: 90%; max-width: 580px;" required="true" 
-                                     requiredMessage="Campo função é obrigatório"  >
-                        <f:selectItem itemLabel="Selecione uma Função" itemValue="" />
-                        <f:selectItems value="#{funcionarioC.funcoes}" />
-                    </p:selectOneMenu>
+                        <p:outputLabel for="nome" value="Nome :" />
+                        <p:inputText id="nome" value="#{funcionarioC.funcionario.nome}" required="true" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="dtContratacao" value="Data de Contratação:"/>
-                    <p:calendar id="dtContratacao" value="#{funcionarioC.funcionario.dtContratacao}" locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"/>
+                        <p:outputLabel for="foneMovel" value="Fone Móvel" />
+                        <p:inputMask  id="foneMovel" value="#{funcionarioC.funcionario.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:outputLabel for="btWhats" value="Móvel tem Whatsapp"/>
+                        <p:selectBooleanButton id="btWhats" value="#{funcionarioC.funcionario.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 
-                    <p:outputLabel for="logradouro" value="Logradouro:"/>
-                    <p:inputText id="logradouro" value="#{funcionarioC.endereco.logradouro}"/>
+                        <p:outputLabel for="foneFixo" value="Fone fixo:" />
+                        <p:inputMask id="foneFixo" value="#{funcionarioC.funcionario.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="numero" value="Número:"/>
-                    <p:inputText id="numero" value="#{funcionarioC.endereco.numero}"/>
+                        <p:outputLabel for="email" value="E-mail :" />
+                        <p:inputText id="email" value="#{funcionarioC.funcionario.email}" type="email"
+                                     required="true" style="width: 100%; max-width: 600px;"/>
 
-                    <p:outputLabel for="complemento" value="Complemento"/>
-                    <p:inputText id="complemento" value="#{funcionarioC.endereco.complemento}"/>
+                        <h:outputLabel for="funcao" value="Função " />
+                        <p:selectOneMenu styleClass="form-control" id="perfil" value="#{funcionarioC.funcao.id}" style="width: 90%; max-width: 580px;" required="true" 
+                                         requiredMessage="Campo função é obrigatório"  >
+                            <f:selectItem itemLabel="Selecione uma Função" itemValue="" />
+                            <f:selectItems value="#{funcionarioC.funcoes}" />
+                        </p:selectOneMenu>
 
-                    <p:outputLabel for="bairro" value="Bairro:"/>
-                    <p:inputText id="bairro" value="#{funcionarioC.endereco.bairro}"/>
+                        <p:outputLabel for="dtContratacao" value="Data de Contratação:"/>
+                        <p:calendar id="dtContratacao" value="#{funcionarioC.funcionario.dtContratacao}" locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"/>
 
-                    <p:outputLabel for="cidade" value="Cidade:"/>
-                    <p:inputText id="cidade" value="#{funcionarioC.endereco.cidade}"/>
+                    </p:panelGrid>
 
-                    <p:outputLabel for="obs" value="Observação:"/>
-                    <p:inputText id="obs" value="#{funcionarioC.endereco.obs}"/>
+                </p:fieldset>
 
-                </p:panelGrid>
+                <p:fieldset legend="Endereço" style="margin-bottom:20px">
+
+                    <p:panelGrid class="formStyle" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
+                                 styleClass="painel_grid_noborder" >
+
+                        <p:outputLabel for="logradouro" value="Logradouro:"/>
+                        <p:inputText id="logradouro" value="#{funcionarioC.endereco.logradouro}"/>
+
+                        <p:outputLabel for="numero" value="Número:"/>
+                        <p:inputText id="numero" value="#{funcionarioC.endereco.numero}"/>
+
+                        <p:outputLabel for="complemento" value="Complemento"/>
+                        <p:inputText id="complemento" value="#{funcionarioC.endereco.complemento}"/>
+
+                        <p:outputLabel for="bairro" value="Bairro:"/>
+                        <p:inputText id="bairro" value="#{funcionarioC.endereco.bairro}"/>
+
+                        <p:outputLabel for="cidade" value="Cidade:"/>
+                        <p:inputText id="cidade" value="#{funcionarioC.endereco.cidade}"/>
+
+                        <p:outputLabel for="obs" value="Observação:"/>
+                        <p:inputText id="obs" value="#{funcionarioC.endereco.obs}"/>
+
+                    </p:panelGrid>
+
+                </p:fieldset>
+
             </h:panelGroup>
-            <!--fim da tela de cadastro-->
-
 
         </h:form>
     </ui:define>
