@@ -95,18 +95,18 @@
                                  styleClass="painel_grid_noborder" >
 
                         <p:outputLabel for="nome" value="Nome :" />
-                        <p:inputText id="nome" value="#{profC.prof.nome}" required="true" size="40" style="width: 100%; max-width: 600px;"/>
+                        <p:inputText id="nome" value="#{profC.prof.nome}" required="true" size="40" style="width: 50%; max-width: 600px;"/>
 
                         <p:outputLabel for="foneMovel" value="Fone Móvel" />
-                        <p:inputMask  id="foneMovel" value="#{profC.prof.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:inputMask  id="foneMovel" value="#{profC.prof.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 50%; max-width: 600px;"/>
                         <p:outputLabel for="btWhats" value="Móvel tem Whatsapp"/>
                         <p:selectBooleanButton id="btWhats" value="#{profC.prof.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 
                         <p:outputLabel for="foneFixo" value="Fone fixo:" />
-                        <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 50%; max-width: 600px;"/>
 
                         <p:outputLabel for="email" value="Email:" />
-                        <p:inputText id="email" value="#{profC.prof.email}" style="width: 100%; max-width: 600px;"/>
+                        <p:inputText id="email" value="#{profC.prof.email}" style="width: 50%; max-width: 600px;"/>
 
                     </p:panelGrid>
                 </p:fieldset>

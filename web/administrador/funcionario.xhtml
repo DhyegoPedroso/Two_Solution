@@ -32,7 +32,7 @@
                 <p:panelGrid id="panelGridPesq" columns="2" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-5" styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="nome_pesquisa" value="Nome :" />
-                    <p:inputText id="nome_pesquisa" value="#{funcionarioC.funcionario.nome}" style="width: 100%" />
+                    <p:inputText id="nome_pesquisa" value="#{funcionarioC.funcionario.nome}" style="margin-left: 5px" />
                     <p:spacer />
 
                 </p:panelGrid>
@@ -95,22 +95,22 @@
                                  styleClass="painel_grid_noborder" >
 
                         <p:outputLabel for="nome" value="Nome :" />
-                        <p:inputText id="nome" value="#{funcionarioC.funcionario.nome}" required="true" style="width: 100%; max-width: 600px;"/>
+                        <p:inputText id="nome" value="#{funcionarioC.funcionario.nome}" required="true" style="width: 50%; max-width: 600px;"/>
 
                         <p:outputLabel for="foneMovel" value="Fone Móvel" />
-                        <p:inputMask  id="foneMovel" value="#{funcionarioC.funcionario.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:inputMask  id="foneMovel" value="#{funcionarioC.funcionario.foneMovel}" required="true" mask="(99) 99999-9999" style="width: 50%; max-width: 600px;"/>
                         <p:outputLabel for="btWhats" value="Móvel tem Whatsapp"/>
                         <p:selectBooleanButton id="btWhats" value="#{funcionarioC.funcionario.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 
                         <p:outputLabel for="foneFixo" value="Fone fixo:" />
-                        <p:inputMask id="foneFixo" value="#{funcionarioC.funcionario.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 100%; max-width: 600px;"/>
+                        <p:inputMask id="foneFixo" value="#{funcionarioC.funcionario.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 50%; max-width: 600px;"/>
 
                         <p:outputLabel for="email" value="E-mail :" />
                         <p:inputText id="email" value="#{funcionarioC.funcionario.email}" type="email"
-                                     required="true" style="width: 100%; max-width: 600px;"/>
+                                     required="true" style="width: 50%; max-width: 600px;"/>
 
                         <h:outputLabel for="funcao" value="Função " />
-                        <p:selectOneMenu styleClass="form-control" id="perfil" value="#{funcionarioC.funcao.id}" style="width: 90%; max-width: 580px;" required="true" 
+                        <p:selectOneMenu styleClass="form-control" id="perfil" value="#{funcionarioC.funcao.id}" style="width: 50%; max-width: 580px;" required="true" 
                                          requiredMessage="Campo função é obrigatório"  >
                             <f:selectItem itemLabel="Selecione uma Função" itemValue="" />
                             <f:selectItems value="#{funcionarioC.funcoes}" />
