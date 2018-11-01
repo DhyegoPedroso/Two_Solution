@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.container.modelo;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -22,6 +15,7 @@ import javax.persistence.Table;
 public class Professor extends Pessoa implements Serializable {
 
     private String disciplinas;
+
     public Professor() {
     }
 
@@ -37,6 +31,5 @@ public class Professor extends Pessoa implements Serializable {
     public void setDisciplinas(String disciplinas) {
         this.disciplinas = disciplinas;
     }
-
 
 }
