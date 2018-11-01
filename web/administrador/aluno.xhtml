@@ -14,14 +14,14 @@
 
             <p:messages id="mens"  autoUpdate="true" />
 
-            <h:panelGroup id="aba_pesquisa" rendered="#{!alunoC.mostraToolbar}" >
+            <h:panelGroup id="aba1" rendered="#{!alunoC.mostra_toolbar}" >
 
-                <p:toolbar id="toolbar_pesquisa" styleClass="toolbar">
+                <p:toolbar styleClass="toolbar">
                     <p:toolbarGroup  >
-                        <p:commandButton value="Pesquisar" actionListener="#{alunoC.pesquisar}"
-                                         update="@form" process="@this panelGridPesq" />
+                        <p:commandButton value="Pesquisar" actionListener="#{alunoC.pesquisar()}"
+                                         update="dadosAluno" process="@this panelGridPesq" />
                         <p:separator></p:separator>
-                        <p:commandButton value="Novo" actionListener="#{alunoC.mudaToolbar}" update="@form" global="false"  />
+                        <p:commandButton value="Novo" actionListener="#{alunoC.novo}" update="@form" global="false"  />
                     </p:toolbarGroup>
                 </p:toolbar>
 
@@ -35,42 +35,40 @@
 
                 </p:panelGrid>
 
-                <p:dataTable id="dadosAlunos" value="#{alunoC.modelAlunos}" var="aluno" reflow="true" paginator="true"
-                             style="margin-top: 20px;"  emptyMessage="Nenhum aluno encontrado" rows="10" paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             currentPageReportTemplate="[ {currentPage} de {totalPages}  ]"
-                             rowsPerPageTemplate="5,10,15">
-                    <p:column headerText="Nome">
+                <p:dataTable id="dadosAluno" value="#{alunoC.modelAlunos}" var="aluno" reflow="true"
+                             style="margin-top: 20px;"  emptyMessage="Nenhum aluno encontrado">
+                    <p:column headerText="Nome" priority="1">
                         <h:outputText value="#{aluno.nome}" />
                     </p:column>
-                    <p:column headerText="Email">
+                    <p:column headerText="E-mail" priority="1">
                         <h:outputText value="#{aluno.email}" />
+                    </p:column>
+                    <p:column headerText="CPF" priority="2">
+                        <h:outputText value="#{aluno.cpf}" />
                     </p:column>
                     <p:column headerText="Fone">
                         <h:outputText value="#{aluno.foneMovel}" />
-                    </p:column>
-                    <p:column headerText="CPF" >
-                        <h:outputText value="#{aluno.cpf}" />
                     </p:column>
                     <p:column headerText="Whatsapp">
                         <p:selectBooleanButton value="#{aluno.whatsapp}" disabled="true" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
                     </p:column>
 
-                    <p:column headerText="Alterar" class="centralizado tabela_botao_usuario"  >
-                        <p:commandButton icon="ui-icon-pencil" title="Alterar"
-                                         process="@this" update="@form" actionListener="#{alunoC.alterarAluno()}">
-                            <f:setPropertyActionListener target="#{alunoC.aluno}" value="#{aluno}"/>          
+                    <p:column headerText="Alterar" class="centralizado tabela_botao_usuario" priority="1" >
+                        <p:commandButton icon="ui-icon-pencil" title="Alterar" process="@this" update="@form" actionListener="#{alunoC.carregarParaAlterar()}">
+                            <f:setPropertyActionListener target="#{alunoC.aluno}" value="#{aluno}"   />          
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{alunoC.excluir()}" update="dadosAlunos" title="Excluir">
-                            <p:confirm header="Confirmação" message="Tem certeza exclusão?" 
-                                       icon="ui-icon-alert" />
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{alunoC.excluir()}" update="dadosAluno" title="Excluir" >
+                            <p:confirm header="Confirmação" message="Tem certeza exclusão?" icon="ui-icon-alert" />
                             <f:setPropertyActionListener target="#{alunoC.aluno}" value="#{aluno}"   />
                         </p:commandButton>
+
                     </p:column>
 
                 </p:dataTable>
+
             </h:panelGroup> 
+
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" 
                                  icon="ui-icon-check" />
@@ -78,18 +76,21 @@
                                  icon="ui-icon-close" />
             </p:confirmDialog>
 
-            <h:panelGroup id="aba_alterar" rendered="#{alunoC.mostraToolbar}">
+            <h:panelGroup id="aba_alterar" rendered="#{alunoC.mostra_toolbar}">
 
                 <p:toolbar id="toolbar_salvar" styleClass="toolbar">
+
                     <p:toolbarGroup  >
                         <p:commandButton value="Salvar" action="#{alunoC.salvar()}" update="aba_alterar" />
                         <p:separator></p:separator>
-                        <p:commandButton value="Cancelar" actionListener="#{alunoC.mudaToolbar}" immediate="true"
+                        <p:commandButton value="Cancelar" actionListener="#{alunoC.novaPesquisa}" immediate="true"
                                          update="@form" global="false" />
                     </p:toolbarGroup>
+
                 </p:toolbar>
 
                 <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px; margin-top: 10px">
+
                     <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
                                  styleClass="painel_grid_noborder" >
 
@@ -111,6 +112,7 @@
                         <p:inputText id="email" value="#{alunoC.aluno.email}" style="width: 50%; max-width: 600px;"/>
 
                     </p:panelGrid>
+
                 </p:fieldset>
 
                 <p:fieldset legend="Endereço" style="margin-bottom:20px">

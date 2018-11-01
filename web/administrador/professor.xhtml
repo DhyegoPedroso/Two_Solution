@@ -103,7 +103,7 @@
                         <p:selectBooleanButton id="btWhats" value="#{profC.prof.whatsapp}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 
                         <p:outputLabel for="foneFixo" value="Fone fixo:" />
-                        <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="false" mask="(99) 9999-9999" style="width: 50%; max-width: 600px;"/>
+                        <p:inputMask id="foneFixo" value="#{profC.prof.foneFixo}" required="true" mask="(99) 9999-9999" style="width: 50%; max-width: 600px;"/>
 
                         <p:outputLabel for="email" value="Email:" />
                         <p:inputText id="email" value="#{profC.prof.email}" style="width: 50%; max-width: 600px;"/>
@@ -117,19 +117,19 @@
                                  styleClass="painel_grid_noborder" >
 
                         <p:outputLabel for="logradouro" value="Logradouro:"/>
-                        <p:inputText id="logradouro" value="#{profC.endereco.logradouro}"/>
+                        <p:inputText id="logradouro" required="true" value="#{profC.endereco.logradouro}"/>
 
                         <p:outputLabel for="numero" value="Número:"/>
-                        <p:inputText id="numero" value="#{profC.endereco.numero}"/>
+                        <p:inputText id="numero" required="true" value="#{profC.endereco.numero}"/>
 
                         <p:outputLabel for="complemento" value="Complemento"/>
-                        <p:inputText id="complemento" value="#{profC.endereco.complemento}"/>
+                        <p:inputText id="complemento" required="true" value="#{profC.endereco.complemento}"/>
 
                         <p:outputLabel for="bairro" value="Bairro:"/>
-                        <p:inputText id="bairro" value="#{profC.endereco.bairro}"/>
+                        <p:inputText id="bairro" required="true" value="#{profC.endereco.bairro}"/>
 
                         <p:outputLabel for="cidade" value="Cidade:"/>
-                        <p:inputText id="cidade" value="#{profC.endereco.cidade}"/>
+                        <p:inputText id="cidade" required="true" value="#{profC.endereco.cidade}"/>
 
                         <p:outputLabel for="obs" value="Observação:"/>
                         <p:inputText id="obs" value="#{profC.endereco.obs}"/>

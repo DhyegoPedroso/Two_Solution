@@ -37,6 +37,7 @@ public class FuncionarioControle implements Serializable {
     private List<Funcionario> funcionarios;
     private List<SelectItem> funcoes;
     private boolean mostra_toolbar;
+    private String pesqNome = "";
 
     @PostConstruct
     public void constroiTudo() {
@@ -68,9 +69,15 @@ public class FuncionarioControle implements Serializable {
         funcionarioDao = new FuncionarioDaoImpl();
         try {
             abreSessao();
-            funcionarios = funcionarioDao.pesquisaPorNome(funcionario.getNome(), sessao);
+
+            if (!pesqNome.equals("")) {
+                funcionarios = funcionarioDao.pesquisaPorNome(pesqNome, sessao);
+            } else {
+                Mensagem.mensagemError("Erro ao Pesquisar\no campo abaixo é obrigatorio");
+            }
+
             modelFuncionarios = new ListDataModel(funcionarios);
-            funcionario.setNome(null);
+            pesqNome = null;
         } catch (Exception e) {
             System.out.println("erro ao pesquisar funcionario por nome: " + e.getMessage());
         } finally {
@@ -223,6 +230,14 @@ public class FuncionarioControle implements Serializable {
 
     public List<Funcionario> getFuncionarios() {
         return funcionarios;
+    }
+
+    public String getPesqNome() {
+        return pesqNome;
+    }
+
+    public void setPesqNome(String pesqNome) {
+        this.pesqNome = pesqNome;
     }
 
 }

@@ -26,7 +26,7 @@ public class Endereco implements Serializable {
     private Long id;
 
     private String logradouro;
-    private int numero;
+    private Integer numero;
     private String bairro;
     private String cidade;
     private String complemento;
@@ -36,11 +36,11 @@ public class Endereco implements Serializable {
     @OneToOne
     @JoinColumn(name = "idPessoa")
     private Pessoa pessoa;
-    
+
     public Endereco() {
     }
 
-    public Endereco(Long id, String logradouro, int numero, String bairro, String cidade, String complemento, String obs) {
+    public Endereco(Long id, String logradouro, Integer numero, String bairro, String cidade, String complemento, String obs) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -74,11 +74,11 @@ public class Endereco implements Serializable {
         this.logradouro = logradouro;
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 

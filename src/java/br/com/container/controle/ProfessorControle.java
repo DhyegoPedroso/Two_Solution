@@ -65,7 +65,7 @@ public class ProfessorControle implements Serializable {
             } else if (!pesqNome.equals("")) {
                 profs = dao.pesquisaPorNome(pesqNome, session);
             } else {
-                profs = dao.listaTodos(session);
+                Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
             }
 
             modelProfs = new ListDataModel(profs);

@@ -6,7 +6,6 @@ import br.com.container.dao.HibernateUtil;
 import br.com.container.modelo.Aluno;
 import br.com.container.modelo.Endereco;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,42 +22,48 @@ import org.hibernate.Session;
 @ViewScoped
 public class AlunoControle implements Serializable {
 
-    private boolean mostraToolbar = false;
+    private Aluno aluno;
+    private AlunoDao alunoDao;
+    private Endereco endereco;
+    private Session sessao;
+    private DataModel<Aluno> modelAlunos;
+    private List<Aluno> alunos;
+    private boolean mostra_toolbar;
     private String pesqNome = "";
     private String pesqCpf = "";
 
-    private Session session;
-    private AlunoDao dao;
-
-    private Aluno aluno;
-    private Endereco endereco;
-    private List<Aluno> alunos;
-    private DataModel<Aluno> modelAlunos;
-
     private void abreSessao() {
-        if (session == null || !session.isOpen()) {
-            session = HibernateUtil.abreSessao();
+        if (sessao == null) {
+            sessao = HibernateUtil.abreSessao();
+        } else if (!sessao.isOpen()) {
+            sessao = HibernateUtil.abreSessao();
         }
     }
 
-    public void mudaToolbar() {
-        aluno = new Aluno();
-        aluno.setWhatsapp(true);
-        alunos = new ArrayList();
-        pesqNome = "";
-        pesqCpf = "";
-        mostraToolbar = !mostraToolbar;
+    public void novo() {
+        mostra_toolbar = !mostra_toolbar;
+        limpar();
+    }
+
+    public void novaPesquisa() {
+        mostra_toolbar = !mostra_toolbar;
+        limpar();
+    }
+
+    public void preparaAlterar() {
+        mostra_toolbar = !mostra_toolbar;
+        limpar();
     }
 
     public void pesquisar() {
-        dao = new AlunoDaoImpl();
+        alunoDao = new AlunoDaoImpl();
         try {
             abreSessao();
 
             if (!pesqNome.equals("")) {
-                alunos = dao.pesquisaPorNome(pesqNome, session);
+                alunos = alunoDao.pesquisaPorNome(pesqNome, sessao);
             } else if (!pesqCpf.equals("")) {
-                alunos = dao.pesqPorCpf(pesqCpf, session);
+                alunos = alunoDao.pesqPorCpf(pesqCpf, sessao);
             } else {
                 Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
             }
@@ -69,59 +74,107 @@ public class AlunoControle implements Serializable {
         } catch (HibernateException ex) {
             System.err.println("Erro pesquisa Aluno:\n" + ex.getMessage());
         } finally {
-            session.close();
+            sessao.close();
         }
     }
 
-    public void salvar() {
-        dao = new AlunoDaoImpl();
-        abreSessao();
-        try {
-            aluno.setEndereco(endereco);
-            endereco.setPessoa(aluno);
-            dao.salvarOuAlterar(aluno, session);
-            Mensagem.salvar("Aluno " + aluno.getNome());
-            aluno = null;
-            endereco = null;
-        } catch (HibernateException ex) {
-            Mensagem.mensagemError("Erro ao salvar\nTente novamente");
-            System.err.println("Erro pesquisa aluno:\n" + ex.getMessage());
-        } finally {
-            aluno = new Aluno();
-            endereco = new Endereco();
-            aluno.setWhatsapp(true);
-            session.close();
-        }
+    public void limpar() {
+        aluno = new Aluno();
+        endereco = new Endereco();
     }
 
-    public void alterarAluno() {
-        mostraToolbar = !mostraToolbar;
+    public void carregarParaAlterar() {
+        mostra_toolbar = !mostra_toolbar;
         aluno = modelAlunos.getRowData();
         endereco = aluno.getEndereco();
     }
 
     public void excluir() {
         aluno = modelAlunos.getRowData();
-        dao = new AlunoDaoImpl();
+        alunoDao = new AlunoDaoImpl();
         try {
             abreSessao();
-            dao.remover(aluno, session);
+            alunoDao.remover(aluno, sessao);
             Mensagem.excluir("Aluno " + aluno.getNome());
             aluno = new Aluno();
-        } catch (Exception ex) {
+        } catch (HibernateException ex) {
             System.err.println("Erro ao excluir aluno:\n" + ex.getMessage());
         } finally {
-            session.close();
+            sessao.close();
         }
     }
 
-    //Getters e Setters
-    public boolean isMostraToolbar() {
-        return mostraToolbar;
+    public void salvar() {
+        alunoDao = new AlunoDaoImpl();
+        abreSessao();
+        try {
+            aluno.setEndereco(endereco);
+            endereco.setPessoa(aluno);
+            alunoDao.salvarOuAlterar(aluno, sessao);
+            Mensagem.salvar("Aluno " + aluno.getNome());
+            aluno = null;
+            endereco = null;
+
+        } catch (HibernateException e) {
+            boolean isLoginDuplicado = e.getCause().getMessage().contains("'email_UNIQUE'");
+            if (isLoginDuplicado) {
+                Mensagem.campoExiste("E-mail");
+            }
+            System.out.println("Erro ao salvar aluno " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro no salvar alunoDao Controle "
+                    + e.getMessage());
+        } finally {
+            sessao.close();
+        }
+        limpar();
     }
 
-    public void setMostraToolbar(boolean mostraToolbar) {
-        this.mostraToolbar = mostraToolbar;
+    public void limparTela() {
+        limpar();
+    }
+
+    //getters e setters
+    public Aluno getAluno() {
+        if (aluno == null) {
+            aluno = new Aluno();
+        }
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
+    public Endereco getEndereco() {
+        if (endereco == null) {
+            endereco = new Endereco();
+        }
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public DataModel<Aluno> getModelAlunos() {
+        return modelAlunos;
+    }
+
+    public void setModelAlunos(DataModel<Aluno> modelUsuarios) {
+        this.modelAlunos = modelUsuarios;
+    }
+
+    public boolean isMostra_toolbar() {
+        return mostra_toolbar;
+    }
+
+    public void setMostra_toolbar(boolean mostra_toolbar) {
+        this.mostra_toolbar = mostra_toolbar;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
     }
 
     public String getPesqNome() {
@@ -140,45 +193,4 @@ public class AlunoControle implements Serializable {
         this.pesqCpf = pesqCpf;
     }
 
-    public Aluno getAluno() {
-        if (aluno == null) {
-            aluno = new Aluno();
-            aluno.setWhatsapp(true);
-        }
-        return aluno;
-    }
-
-    public void setProf(Aluno aluno) {
-        this.aluno = aluno;
-    }
-
-    public List<Aluno> getAlunos() {
-        if (alunos == null) {
-            alunos = new ArrayList();
-        }
-        return alunos;
-    }
-
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
-    }
-
-    public DataModel<Aluno> getModelAlunos() {
-        return modelAlunos;
-    }
-
-    public void setModelAlunos(DataModel<Aluno> modelAlunos) {
-        this.modelAlunos = modelAlunos;
-    }
-
-    public Endereco getEndereco() {
-        if (endereco == null) {
-            endereco = new Endereco();
-        }
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 }
