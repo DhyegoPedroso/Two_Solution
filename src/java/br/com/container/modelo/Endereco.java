@@ -37,6 +37,10 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "idPessoa")
     private Pessoa pessoa;
     
+    @OneToOne
+    @JoinColumn(name = "idEmpresa")
+    private Empresa empresa;
+    
     public Endereco() {
     }
 
@@ -48,6 +52,14 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
         this.complemento = complemento;
         this.obs = obs;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     public Pessoa getPessoa() {
