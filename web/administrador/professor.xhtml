@@ -18,7 +18,7 @@
 
                 <p:toolbar id="toolbar_pesquisa" styleClass="toolbar">
                     <p:toolbarGroup  >
-                        <p:commandButton value="Pesquisar" actionListener="#{profC.pesquisar}"
+                        <p:commandButton value="Pesquisar" actionListener="#{profC.pesquisarNomeOuDisciplina}"
                                          update="@form" process="@this panelGridPesq" />
                         <p:separator></p:separator>
                         <p:commandButton value="Novo" actionListener="#{profC.mudaToolbar}" update="@form" global="false"  />

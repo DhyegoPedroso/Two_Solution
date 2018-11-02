@@ -15,7 +15,7 @@ import org.hibernate.Session;
  *
  * @author cel05
  */
-public class ProfessorDaoImpl extends BaseDaoImpl<Professor, Long> implements ProfessorDao{
+public class ProfessorDaoImpl extends BaseDaoImpl<Professor, Long> implements ProfessorDao {
 
     @Override
     public Professor pesquisaEntidadeId(Long id, Session session) throws HibernateException {
@@ -35,17 +35,53 @@ public class ProfessorDaoImpl extends BaseDaoImpl<Professor, Long> implements Pr
     }
 
     @Override
-    public List<Professor> pesqPorDisciplina(String disciplina, Session session) throws HibernateException {
-        Query consulta = session.createQuery("from Professor p where p.disciplinas like :disciplinas");
-        consulta.setParameter("disciplinas", "%" + disciplina + "%");
+    public List<Professor> pesqPorNomeOuDisciplina(String nome, String disciplina, Session session) throws HibernateException {
+        String sql = "from Professor p where ";
+        Query consulta = null;
+        if (!nome.isEmpty()) {
+            sql += " p.nome like :nome";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("nome", "%" + nome + "%");
+        } else {
+            sql += " p.disciplinas like :disciplinas";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("disciplinas", "%" + disciplina + "%");
+        }
         return consulta.list();
     }
 
     @Override
-    public List<Professor> pesqPorNomeEDisciplina(String nome, String disciplina, Session session) throws HibernateException {
-        Query consulta = session.createQuery("from Professor p where p.nome like :nome and p.disciplinas like :disciplinas");
-        consulta.setParameter("nome", "%" + nome + "%");
-        consulta.setParameter("disciplinas", ";%" + disciplina + "%;");
+    public List<Professor> pesqPorCidadeOuBairro(String cidade, String bairro, Session session) throws HibernateException {
+        String sql = "from Professor p where ";
+        Query consulta = null;
+        if (!cidade.isEmpty()) {
+            sql += " p.endereco.cidade like :cidade";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("cidade", "%" + cidade + "%");
+        } else {
+            sql += " p.endereco.bairro like :bairro";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("bairro", "%" + bairro + "%");
+        }
         return consulta.list();
+    }
+    
+    public static void main(String[] args) {
+        ProfessorDaoImpl impl = new ProfessorDaoImpl();
+        
+        Session session = HibernateUtil.abreSessao();
+        
+        List<Professor> consultas = impl.pesqPorCidadeOuBairro("", "Barreiros", session);
+        
+        for (Professor consulta : consultas) {
+            System.out.println("Nome:" +consulta.getNome());
+            System.out.println("Disciplinas:"+consulta.getDisciplinas());
+            System.out.println("Telefone:"+consulta.getFoneMovel());
+            System.out.println("WhatsApp:"+consulta.getWhatsapp());
+            System.out.println("Bairro:"+consulta.getEndereco().getBairro());
+            System.out.println("Cidade:"+consulta.getEndereco().getCidade());
+        }
+        
+        session.close();
     }
 }

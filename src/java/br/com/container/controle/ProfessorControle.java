@@ -28,6 +28,8 @@ public class ProfessorControle implements Serializable {
     private boolean pesquisaPorDisciplina = false;
     private String pesqNome = "";
     private String pesqDisciplina = "";
+    private String pesqCidade = "";
+    private String pesqBairro = "";
 
     private Session session;
     private ProfessorDao dao;
@@ -53,17 +55,13 @@ public class ProfessorControle implements Serializable {
         mostraToolbar = !mostraToolbar;
     }
 
-    public void pesquisar() {
+    public void pesquisarNomeOuDisciplina() {
         dao = new ProfessorDaoImpl();
         try {
             abreSessao();
 
-            if (!pesqNome.equals("") && !pesqDisciplina.equals("")) {
-                profs = dao.pesqPorNomeEDisciplina(pesqNome, pesqDisciplina, session);
-            } else if (!pesqDisciplina.equals("")) {
-                profs = dao.pesqPorDisciplina(pesqDisciplina, session);
-            } else if (!pesqNome.equals("")) {
-                profs = dao.pesquisaPorNome(pesqNome, session);
+            if (!pesqDisciplina.equalsIgnoreCase("") || !pesqNome.equalsIgnoreCase("")) {
+                profs = dao.pesqPorNomeOuDisciplina(pesqNome, pesqDisciplina, session);
             } else {
                 Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
             }
@@ -71,6 +69,27 @@ public class ProfessorControle implements Serializable {
             modelProfs = new ListDataModel(profs);
             pesqNome = null;
             pesqDisciplina = null;
+        } catch (HibernateException ex) {
+            System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    public void pesquisarBairroOuCidade() {
+        dao = new ProfessorDaoImpl();
+        try {
+            abreSessao();
+
+            if (!pesqBairro.equalsIgnoreCase("") || !pesqCidade.equalsIgnoreCase("")) {
+                profs = dao.pesqPorCidadeOuBairro(pesqCidade, pesqBairro, session);
+            } else {
+                Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
+            }
+
+            modelProfs = new ListDataModel(profs);
+            pesqCidade = null;
+            pesqBairro = null;
         } catch (HibernateException ex) {
             System.err.println("Erro pesquisa professor:\n" + ex.getMessage());
         } finally {
@@ -233,5 +252,21 @@ public class ProfessorControle implements Serializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getPesqCidade() {
+        return pesqCidade;
+    }
+
+    public void setPesqCidade(String pesqCidade) {
+        this.pesqCidade = pesqCidade;
+    }
+
+    public String getPesqBairro() {
+        return pesqBairro;
+    }
+
+    public void setPesqBairro(String pesqBairro) {
+        this.pesqBairro = pesqBairro;
     }
 }
