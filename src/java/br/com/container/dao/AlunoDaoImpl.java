@@ -30,9 +30,20 @@ public class AlunoDaoImpl extends BaseDaoImpl<Aluno, Long> implements AlunoDao {
     }
 
     @Override
-    public List<Aluno> pesqPorCpf(String cpf, Session session) throws HibernateException {
-        Query consulta = session.createQuery("from Aluno a where a.cpf like :cpf");
-        consulta.setParameter("cpf", "%" + cpf + "%");
+    public List<Aluno> pesqPorNomeOuCpf(String nome, String cpf, Session session) throws HibernateException {
+        String sql = "from Aluno a where ";
+        Query consulta = null;
+
+        if (!nome.isEmpty()) {
+            sql += " a.nome like :nome";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("nome", "%" + nome + "%");
+        } else {
+            sql += " a.cpf like :cpf";
+            consulta = session.createQuery(sql);
+            consulta.setParameter("cpf", "%" + cpf + "%");
+        }
+
         return consulta.list();
     }
 

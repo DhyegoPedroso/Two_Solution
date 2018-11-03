@@ -11,6 +11,6 @@ import org.hibernate.Session;
  */
 public interface AlunoDao extends BaseDao<Aluno, Long> {
 
-    List<Aluno> pesqPorCpf(String disciplina, Session session) throws HibernateException;
+    List<Aluno> pesqPorNomeOuCpf(String nome, String cpf, Session session) throws HibernateException;
 
 }

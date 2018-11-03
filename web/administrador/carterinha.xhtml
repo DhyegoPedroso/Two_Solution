@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../logado/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="conteudo">
+        <h1 class="jr-titulo1">Carterinha</h1>
+
+        <h:form id="form_pesquisa">
+
+            <p:messages id="mens"  autoUpdate="true" />
+
+            <h:panelGroup id="aba1" rendered="#{!carterinhaC.mostra_toolbar}" >
+
+                <p:toolbar styleClass="toolbar">
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Pesquisar" actionListener="#{carterinhaC.pesquisar()}"
+                                         update="dadosCarterinha" process="@this panelGridPesq" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Novo" actionListener="#{carterinhaC.novo}" update="@form" global="false"  />
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:panelGrid id="panelGridPesq" columns="2" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-8" styleClass="painel_grid_noborder" >
+
+                    <p:outputLabel for="pesqNome" value="Nome Aluno:"/>
+                    <p:inputText id="pesqNome" value="#{carterinhaC.pesqNome}" style="margin-left: 5px"/>
+                    <p:outputLabel for="pesqMatricula" value="Matricula:" />
+                    <p:inputText id="pesqMatricula" value="#{carterinhaC.pesqMatricula}" maxlength="10" style="margin-left: 5px"/>
+                    <p:spacer />
+
+                </p:panelGrid>
+
+                <p:dataTable id="dadosCarterinha" value="#{carterinhaC.modelCarterinhas}" var="carterinha" reflow="true"
+                             style="margin-top: 20px;"  emptyMessage="Nenhuma carterinha encontrada">
+
+                    <p:column headerText="Matricula" priority="1">
+                        <h:outputText value="#{carterinha.matricula}" />
+                    </p:column>
+
+                    <p:column headerText="Nome" priority="1">
+                        <h:outputText value="#{carterinha.aluno.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Validade" priority="1">
+                        <h:outputText value="#{carterinha.validade}" >
+                            <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Curso" priority="2">
+                        <h:outputText value="#{carterinha.curso.curso}" />
+                    </p:column>
+
+                    <p:column headerText="Alterar" class="centralizado tabela_botao_usuario" priority="1" >
+                        <p:commandButton icon="ui-icon-pencil" title="Alterar" process="@this" update="@form" actionListener="#{carterinhaC.carregarParaAlterar()}">
+                            <f:setPropertyActionListener target="#{carterinhaC.carterinha}" value="#{carterinha}"   />          
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{carterinhaC.excluir()}" update="dadosCarterinha" title="Excluir" >
+                            <p:confirm header="Confirmação" message="Tem certeza da exclusão?" icon="ui-icon-alert" />
+                            <f:setPropertyActionListener target="#{carterinhaC.carterinha}" value="#{carterinha}"   />
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:panelGroup> 
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" 
+                                 icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" 
+                                 icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <h:panelGroup id="aba_alterar" rendered="#{carterinhaC.mostra_toolbar}">
+
+                <p:toolbar id="toolbar_salvar" styleClass="toolbar">
+
+                    <p:toolbarGroup  >
+                        <p:commandButton value="Salvar" action="#{carterinhaC.salvar()}" update="aba_alterar" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Cancelar" actionListener="#{carterinhaC.novaPesquisa}" immediate="true"
+                                         update="@form" global="false" />
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+
+                <p:fieldset legend="Dados da Carterinha" style="margin-bottom:20px; margin-top: 10px">
+
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
+                                 styleClass="painel_grid_noborder" >
+
+                        <p:outputLabel for="matricula" value="Matricula:" />
+                        <p:outputLabel id="matricula" value="#{carterinhaC.carterinha.matricula}"  style="width: 50%; max-width: 600px;"/>
+
+                        <p:outputLabel for="nome" value="Nome:" />
+                        <p:inputText id="nome" value="#{carterinhaC.carterinha.aluno.nome}" required="true" size="40" style="width: 50%; max-width: 600px;"/>
+
+                        <p:outputLabel for="validade" value="Validade:" />
+                        <p:outputLabel id="validade" value="#{carterinhaC.carterinha.validade}" style="width: 50%; max-width: 600px;">
+                            <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+
+                        <h:outputLabel for="curso" value="Curso " />
+                        <p:selectOneMenu styleClass="form-control" id="perfil" value="#{carterinhaC.curs.id}" style="width: 90%; max-width: 580px;" required="true" 
+                                         requiredMessage="Campo curso é obrigatório"  >
+                            <f:selectItem itemLabel="Selecione um Curso" itemValue="" />
+                            <f:selectItems value="#{carterinhaC.cursos}" />
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+                </p:fieldset>
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

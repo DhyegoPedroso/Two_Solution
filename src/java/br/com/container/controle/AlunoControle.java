@@ -32,6 +32,10 @@ public class AlunoControle implements Serializable {
     private String pesqNome = "";
     private String pesqCpf = "";
 
+    public AlunoControle() {
+        alunoDao = new AlunoDaoImpl();
+    }
+
     private void abreSessao() {
         if (sessao == null) {
             sessao = HibernateUtil.abreSessao();
@@ -55,15 +59,19 @@ public class AlunoControle implements Serializable {
         limpar();
     }
 
+    public void carregarParaAlterar() {
+        mostra_toolbar = !mostra_toolbar;
+        aluno = modelAlunos.getRowData();
+        endereco = aluno.getEndereco();
+    }
+
     public void pesquisar() {
         alunoDao = new AlunoDaoImpl();
         try {
             abreSessao();
 
-            if (!pesqNome.equals("")) {
-                alunos = alunoDao.pesquisaPorNome(pesqNome, sessao);
-            } else if (!pesqCpf.equals("")) {
-                alunos = alunoDao.pesqPorCpf(pesqCpf, sessao);
+            if (!pesqNome.equals("") || !pesqCpf.equals("")) {
+                alunos = alunoDao.pesqPorNomeOuCpf(pesqNome, pesqCpf, sessao);
             } else {
                 Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
             }
@@ -81,12 +89,6 @@ public class AlunoControle implements Serializable {
     public void limpar() {
         aluno = new Aluno();
         endereco = new Endereco();
-    }
-
-    public void carregarParaAlterar() {
-        mostra_toolbar = !mostra_toolbar;
-        aluno = modelAlunos.getRowData();
-        endereco = aluno.getEndereco();
     }
 
     public void excluir() {
@@ -127,10 +129,6 @@ public class AlunoControle implements Serializable {
         } finally {
             sessao.close();
         }
-        limpar();
-    }
-
-    public void limparTela() {
         limpar();
     }
 
