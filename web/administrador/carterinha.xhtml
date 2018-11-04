@@ -88,6 +88,8 @@
                         <p:separator></p:separator>
                         <p:commandButton value="Cancelar" actionListener="#{carterinhaC.novaPesquisa}" immediate="true"
                                          update="@form" global="false" />
+                        <p:separator></p:separator>
+                        <p:commandButton value="Pesquisa Aluno" type="button" onclick="PF('aluno').show();" /> 
                     </p:toolbarGroup>
 
                 </p:toolbar>
@@ -120,6 +122,40 @@
                 </p:fieldset>
 
             </h:panelGroup>
+
+            <p:dialog header="Pesquisar Aluno" widgetVar="aluno" showEffect="clip" hideEffect="clip" height="500" width="800">
+                <h:panelGroup>
+
+                    <p:panelGrid id="panelGridPesqAluno" columns="3" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-8" styleClass="painel_grid_noborder" >
+
+                        <p:outputLabel for="pesqAluno" value="Nome Aluno:"/>
+                        <p:inputText id="pesqAluno" value="#{carterinhaC.pesqAluno}" style="margin-left: 5px"/>
+                        <p:commandButton value="Pesquisar" actionListener="#{carterinhaC.pesquisarAluno()}"
+                                         update="dadosAlunos" process="@this panelGridPesqAluno" />
+
+                    </p:panelGrid>
+
+                    <p:dataTable id="dadosAlunos" value="#{carterinhaC.modelAlunos}" var="aluno" reflow="true"
+                                 style="margin-top: 20px;"  emptyMessage="Nenhuma aluno encontrada">
+
+                        <p:column headerText="Nome" priority="1">
+                            <h:outputText value="#{aluno.nome}" />
+                        </p:column>
+
+                        <p:column headerText="CPF" priority="2">
+                            <h:outputText value="#{aluno.cpf}" />
+                        </p:column>
+
+                        <p:column headerText="Carregar Aluno" class="centralizado tabela_botao_usuario" priority="1" >
+                            <p:commandButton icon="ui-icon-pencil" title="Carregar" process="@this" update="@form" actionListener="#{carterinhaC.carregarAluno()}">
+                                <f:setPropertyActionListener target="#{carterinhaC.aluno}" value="#{aluno}"   />          
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:panelGroup>
+            </p:dialog>
 
         </h:form>
 

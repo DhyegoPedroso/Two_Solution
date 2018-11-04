@@ -1,5 +1,6 @@
 package br.com.container.controle;
 
+import br.com.container.dao.AlunoDaoImpl;
 import br.com.container.dao.CarterinhaDao;
 import br.com.container.dao.CarterinhaDaoImpl;
 import br.com.container.dao.CursoDao;
@@ -38,11 +39,14 @@ public class CarterinhaControle implements Serializable {
 
     private DataModel<Carterinha> modelCarterinhas;
     private List<Carterinha> carterinhas;
+    private DataModel<Aluno> modelAlunos;
+    private List<Aluno> alunos;
     private List<SelectItem> cursos;
 
     private boolean mostra_toolbar;
     private String pesqNome = "";
     private String pesqMatricula = "";
+    private String pesqAluno = "";
 
     @PostConstruct
     public void inicializar() {
@@ -50,10 +54,8 @@ public class CarterinhaControle implements Serializable {
     }
 
     public CarterinhaControle() {
-    carterinhaDao = new CarterinhaDaoImpl();
+        carterinhaDao = new CarterinhaDaoImpl();
     }
-    
-    
 
     private void abreSessao() {
         if (sessao == null) {
@@ -81,9 +83,14 @@ public class CarterinhaControle implements Serializable {
     }
 
     public void carregarParaAlterar() {
-        mostra_toolbar = !mostra_toolbar;
+        isMostra_toolbar();
         carterinha = modelCarterinhas.getRowData();
         curs = carterinha.getCurso();
+    }
+
+    public void carregarAluno() {
+        mostra_toolbar = !mostra_toolbar;
+        aluno = modelAlunos.getRowData();
     }
 
     public void pesquisar() {
@@ -98,6 +105,24 @@ public class CarterinhaControle implements Serializable {
 
         } catch (HibernateException e) {
             System.err.println("Erro ao pesquisar Carterinha");
+        } finally {
+            sessao.close();
+        }
+    }
+
+    public void pesquisarAluno() {
+        AlunoDaoImpl alunoDaoImpl = new AlunoDaoImpl();
+        try {
+            abreSessao();
+
+            if (!pesqAluno.equals("")) {
+                alunos = alunoDaoImpl.pesquisaPorNome(pesqAluno, sessao);
+            } else {
+                Mensagem.mensagemError("Erro ao pesquisar o campo abaixo é obrigatorio");
+            }
+
+        } catch (HibernateException e) {
+            System.err.println("Erro ao pesquisar Aluno");
         } finally {
             sessao.close();
         }
@@ -256,12 +281,32 @@ public class CarterinhaControle implements Serializable {
         return carterinhas;
     }
 
+    public DataModel<Aluno> getModelAlunos() {
+        return modelAlunos;
+    }
+
+    public void setModelAlunos(DataModel<Aluno> modelAlunos) {
+        this.modelAlunos = modelAlunos;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
     public List<SelectItem> getCursos() {
         return cursos;
     }
 
     public void setCursos(List<SelectItem> cursos) {
         this.cursos = cursos;
+    }
+
+    public String getPesqAluno() {
+        return pesqAluno;
+    }
+
+    public void setPesqAluno(String pesqAluno) {
+        this.pesqAluno = pesqAluno;
     }
 
 }
