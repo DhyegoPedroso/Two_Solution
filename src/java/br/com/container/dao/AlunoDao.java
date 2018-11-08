@@ -13,4 +13,6 @@ public interface AlunoDao extends BaseDao<Aluno, Long> {
 
     List<Aluno> pesqPorNomeOuCpf(String nome, String cpf, Session session) throws HibernateException;
 
+    public Long ultimoIdAluno(Session session) throws HibernateException;
+
 }

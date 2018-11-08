@@ -25,8 +25,6 @@ public class Carterinha implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String matricula;
-
     @ManyToOne
     @JoinColumn(name = "idAluno")
     private Aluno aluno;
@@ -68,14 +66,6 @@ public class Carterinha implements Serializable {
 
     public void setCurso(Curso curso) {
         this.curso = curso;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
     }
 
     @Override

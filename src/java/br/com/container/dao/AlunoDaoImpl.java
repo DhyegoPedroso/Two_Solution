@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 /**
  *
+ *
  * @author Dhyego Pedroso
  */
 public class AlunoDaoImpl extends BaseDaoImpl<Aluno, Long> implements AlunoDao {
@@ -45,6 +46,12 @@ public class AlunoDaoImpl extends BaseDaoImpl<Aluno, Long> implements AlunoDao {
         }
 
         return consulta.list();
+    }
+
+    @Override
+    public Long ultimoIdAluno(Session session) throws HibernateException {
+        Query consulta = session.createQuery("SELECT MAX(a.id) FROM Aluno a");
+        return (Long) consulta.uniqueResult();
     }
 
 }

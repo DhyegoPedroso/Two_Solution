@@ -68,7 +68,6 @@ public class CarterinhaControle implements Serializable {
     public void novo() {
         mostra_toolbar = !mostra_toolbar;
         limpar();
-        gerarMatricula();
         gerarValidade();
     }
 
@@ -133,25 +132,7 @@ public class CarterinhaControle implements Serializable {
         curs = new Curso();
     }
 
-    public void gerarMatricula() {
-        try {
-            abreSessao();
-
-            Long id = carterinhaDao.ultimoIdCarterinha(sessao);
-            carterinha = new Carterinha();
-
-            if (id == null) {
-                carterinha.setMatricula("1000000001");
-            } else {
-                carterinha = carterinhaDao.pesquisaEntidadeId(id, sessao);
-                Long matricula = Long.parseLong(carterinha.getMatricula());
-                carterinha = new Carterinha();
-                carterinha.setMatricula((++matricula).toString());
-            }
-        } catch (Exception e) {
-        }
-
-    }
+  
 
     public void excluir() {
         carterinha = modelCarterinhas.getRowData();
@@ -175,7 +156,6 @@ public class CarterinhaControle implements Serializable {
             Mensagem.salvar("Cartetinha ");
             carterinha = null;
             curs = null;
-            gerarMatricula();
             gerarValidade();
         } catch (HibernateException e) {
             System.err.println("Erro ao salvar Carterinha");
@@ -186,11 +166,11 @@ public class CarterinhaControle implements Serializable {
     }
 
     public void gerarValidade() {
-        Date data = new Date();
+        Date data;
         Calendar validade = Calendar.getInstance();
-        validade.setTime(data);
         validade.set(Calendar.YEAR, validade.get(Calendar.YEAR) + 1);
-        carterinha.setValidade(validade.getTime());
+        data = validade.getTime();
+        carterinha.setValidade(data);
     }
 
     private void carregaComboCurso() {

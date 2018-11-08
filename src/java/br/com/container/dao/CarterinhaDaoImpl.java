@@ -45,12 +45,4 @@ public class CarterinhaDaoImpl extends BaseDaoImpl<Carterinha, Long> implements 
         }
         return consulta.list();
     }
-
-    @Override
-    public Long ultimoIdCarterinha(Session session) throws HibernateException {
-        Query consulta = session.createQuery("SELECT MAX(c.id) FROM Carterinha c");
-        return (Long) consulta.uniqueResult();
-
-    }
-
 }
