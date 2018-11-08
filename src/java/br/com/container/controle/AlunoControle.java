@@ -93,8 +93,6 @@ public class AlunoControle implements Serializable {
     public void limpar() {
         aluno = new Aluno();
         endereco = new Endereco();
-        
-        
     }
 
     public void excluir() {
@@ -141,14 +139,15 @@ public class AlunoControle implements Serializable {
 
     public void gerarMatricula() {
         abreSessao();
+        String matricula;
         Long id = alunoDao.ultimoIdAluno(sessao);
         sessao.close();
         if (id == null) {
-            aluno.setMatricula(pegarAno() + pegarSemestre() + "0001");
-
+            matricula = pegarAno() + pegarSemestre() + "0001";
         } else {
-            aluno.setMatricula(pegarAno() + pegarSemestre() + gerarDigitosFinais());
+            matricula = pegarAno() + pegarSemestre() + gerarDigitosFinais(id);
         }
+        aluno.setMatricula(matricula);
     }
 
     public String pegarAno() {
@@ -169,9 +168,8 @@ public class AlunoControle implements Serializable {
         }
     }
 
-    public String gerarDigitosFinais() {
+    public String gerarDigitosFinais(Long id) {
         abreSessao();
-        Long id = alunoDao.ultimoIdAluno(sessao);
         aluno = alunoDao.pesquisaEntidadeId(id, sessao);
         sessao.close();
         String ano;
@@ -181,6 +179,8 @@ public class AlunoControle implements Serializable {
         ano = aluno.getMatricula().substring(0, 4);
         semestre = aluno.getMatricula().substring(4, 6);
         rand = aluno.getMatricula().substring(6, 10);
+
+        limpar();
 
         if (Integer.parseInt(pegarAno()) == Integer.parseInt(ano)) {
             if (Integer.parseInt(pegarSemestre()) == Integer.parseInt(semestre)) {
