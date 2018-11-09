@@ -29,7 +29,7 @@
                              styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="pesqNome" value="Nome Aluno:"/>
-                    <p:inputText id="pesqNome" value="#{carterinhaC.aluno.nome}" style="margin-left: 5px"/>
+                    <p:inputText id="pesqNome" value="#{carterinhaC.pesqNome}" style="margin-left: 5px"/>
                     <p:outputLabel for="pesqMatricula" value="Matricula:" />
                     <p:inputText id="pesqMatricula" value="#{carterinhaC.pesqMatricula}" maxlength="10" style="margin-left: 5px"/>
                     <p:spacer />
@@ -98,12 +98,9 @@
                     <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-4" 
                                  styleClass="painel_grid_noborder" >
 
-                        <p:outputLabel for="matricula" value="Matricula:" />
-                        <p:inputText  id="matricula" value="#{carterinhaC.aluno.matricula}" disabled="true"  style="width: 50%; max-width: 600px;"/>
-
                         <p:outputLabel for="nome" value="Nome:" />
-                        <p:autoComplete id="nome" forceSelection="true" value="#{carterinhaC.nome}" completeMethod="#{carterinhaC.completeAluno}"
-                                        style="width: 100%; max-width: 600px;"/>
+                        <p:autoComplete id="nome"  forceSelection="true"  minQueryLength="4" 
+                                        value="#{carterinhaC.nome}" completeMethod="#{carterinhaC.completeAluno}"/>
 
                         <p:outputLabel for="validade" value="Validade:" />
                         <p:outputLabel id="validade" value="#{carterinhaC.carterinha.validade}" style="width: 50%; max-width: 600px;">

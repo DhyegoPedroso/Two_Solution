@@ -149,29 +149,51 @@ public class CarterinhaControle implements Serializable {
         }
     }
 
-    public void salvar() {
+    public void carregarDadosAluno() {
+
         try {
             abreSessao();
+            AlunoDao alunoDao = new AlunoDaoImpl();
 
             String[] textoSeparado = nome.split("cpf: ");
             aluno.setCpf(textoSeparado[1]);
-            AlunoDao alunoDao = new AlunoDaoImpl();
-            aluno = (Aluno) alunoDao.pesqPorNomeOuCpf("", aluno.getCpf(), sessao);
-            
-            
+
+            alunos = alunoDao.pesqPorNomeOuCpf("", aluno.getCpf(), sessao);
+
+            alunos.stream().map((aluno1) -> {
+                aluno.setId(aluno1.getId());
+                return aluno1;
+            }).forEachOrdered((aluno1) -> {
+                aluno.setMatricula(aluno1.getMatricula());
+            });
+
+        } catch (HibernateException e) {
+            System.err.println("Erro ao carregar Aluno");
+        } finally {
+            sessao.close();
+        }
+
+    }
+
+    public void salvar() {
+        try {
+            carregarDadosAluno();
+            abreSessao();
+
             carterinha.setCurso(curs);
             carterinha.setAluno(aluno);
             carterinhaDao.salvarOuAlterar(carterinha, sessao);
             Mensagem.salvar("Cartetinha ");
             carterinha = null;
             curs = null;
-            gerarValidade();
+            aluno = null;
         } catch (HibernateException e) {
             System.err.println("Erro ao salvar Carterinha");
         } finally {
             sessao.close();
         }
         limpar();
+        gerarValidade();
     }
 
     public void gerarValidade() {

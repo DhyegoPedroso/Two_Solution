@@ -42,7 +42,7 @@ public class AlunoDaoImpl extends BaseDaoImpl<Aluno, Long> implements AlunoDao {
         } else {
             sql += " a.cpf like :cpf";
             consulta = session.createQuery(sql);
-            consulta.setParameter("cpf", "%" + cpf + "%");
+            consulta.setParameter("cpf", cpf);
         }
 
         return consulta.list();
