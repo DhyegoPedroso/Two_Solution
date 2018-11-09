@@ -39,7 +39,7 @@ public class CarterinhaDaoImpl extends BaseDaoImpl<Carterinha, Long> implements 
             consulta = session.createQuery(sql);
             consulta.setParameter("aluno", "%" + aluno + "%");
         } else {
-            sql += " c.matricula like :matricula";
+            sql += " c.aluno.matricula like :matricula";
             consulta = session.createQuery(sql);
             consulta.setParameter("matricula", matricula);
         }

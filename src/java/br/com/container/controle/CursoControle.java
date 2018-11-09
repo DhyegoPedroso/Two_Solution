@@ -58,9 +58,9 @@ public class CursoControle implements Serializable {
         cursoDao = new CursoDaoImpl();
         try {
             abreSessao();
-            cursos = cursoDao.pesquisaPorNome(curso.getCurso(), sessao);
+            cursos = cursoDao.pesquisaPorNome(curso.getNome(), sessao);
             modelCursos = new ListDataModel(cursos);
-            curso.setCurso(null);
+            curso.setNome(null);
         } catch (Exception e) {
             System.out.println("erro ao pesquisar curso por nome: " + e.getMessage());
         } finally {
@@ -99,7 +99,7 @@ public class CursoControle implements Serializable {
         abreSessao();
         try {
             cursoDao.salvarOuAlterar(curso, sessao);
-            Mensagem.salvar("Curso " + curso.getCurso());
+            Mensagem.salvar("Curso " + curso.getNome());
             curso = null;
         } catch (HibernateException e) {
             System.out.println("Erro ao salvar curso " + e.getMessage());

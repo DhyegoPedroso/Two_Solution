@@ -138,6 +138,7 @@ public class AlunoControle implements Serializable {
     }
 
     public void gerarMatricula() {
+        alunoDao = new AlunoDaoImpl();
         abreSessao();
         String matricula;
         Long id = alunoDao.ultimoIdAluno(sessao);
@@ -169,19 +170,13 @@ public class AlunoControle implements Serializable {
     }
 
     public String gerarDigitosFinais(Long id) {
+        alunoDao = new AlunoDaoImpl();
         abreSessao();
         aluno = alunoDao.pesquisaEntidadeId(id, sessao);
-        sessao.close();
-        String ano;
-        String semestre;
-        String rand;
-
-        ano = aluno.getMatricula().substring(0, 4);
-        semestre = aluno.getMatricula().substring(4, 6);
-        rand = aluno.getMatricula().substring(6, 10);
-
+        String ano = aluno.getMatricula().substring(0, 4);
+        String semestre = aluno.getMatricula().substring(4, 6);
+        String rand = aluno.getMatricula().substring(6, 10);
         limpar();
-
         if (Integer.parseInt(pegarAno()) == Integer.parseInt(ano)) {
             if (Integer.parseInt(pegarSemestre()) == Integer.parseInt(semestre)) {
                 int digito = Integer.parseInt(rand);
@@ -195,8 +190,8 @@ public class AlunoControle implements Serializable {
             return rand = "0001";
         }
     }
-
     //getters e setters
+
     public Aluno getAluno() {
         if (aluno == null) {
             aluno = new Aluno();

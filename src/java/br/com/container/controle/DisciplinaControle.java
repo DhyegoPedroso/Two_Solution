@@ -138,7 +138,7 @@ public class DisciplinaControle implements Serializable{
             CursoDao cursoDao = new CursoDaoImpl();
             todosPerfis = cursoDao.listaTodos(sessao);
             todosPerfis.stream().forEach((perf) -> {
-                cursos.add(new SelectItem(perf.getId(), perf.getCurso()));
+                cursos.add(new SelectItem(perf.getId(), perf.getNome()));
             });
         } catch (HibernateException hi) {
             System.out.println("Erro ao carregar combo curso " + hi.getMessage());

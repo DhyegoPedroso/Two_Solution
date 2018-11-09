@@ -1,5 +1,6 @@
 package br.com.container.controle;
 
+import br.com.container.dao.AlunoDao;
 import br.com.container.dao.AlunoDaoImpl;
 import br.com.container.dao.CarterinhaDao;
 import br.com.container.dao.CarterinhaDaoImpl;
@@ -36,6 +37,7 @@ public class CarterinhaControle implements Serializable {
     private Carterinha carterinha;
     private Curso curs;
     private Aluno aluno;
+    private String nome;
 
     private DataModel<Carterinha> modelCarterinhas;
     private List<Carterinha> carterinhas;
@@ -46,7 +48,6 @@ public class CarterinhaControle implements Serializable {
     private boolean mostra_toolbar;
     private String pesqNome = "";
     private String pesqMatricula = "";
-    private String pesqAluno = "";
 
     @PostConstruct
     public void inicializar() {
@@ -55,6 +56,25 @@ public class CarterinhaControle implements Serializable {
 
     public CarterinhaControle() {
         carterinhaDao = new CarterinhaDaoImpl();
+    }
+
+    public List<String> completeAluno(String query) {
+        abreSessao();
+        List<String> autoCompletes = new ArrayList<>();
+        try {
+            AlunoDao alunoDao = new AlunoDaoImpl();
+            alunos = alunoDao.pesquisaPorNome(query, sessao);
+
+            for (Aluno aluno1 : alunos) {
+                autoCompletes.add(aluno1.getNome() + " cpf: " + aluno1.getCpf());
+            }
+
+        } catch (HibernateException e) {
+            System.err.println("Erro ao pesquisar aluno");
+        } finally {
+            sessao.close();
+        }
+        return autoCompletes;
     }
 
     private void abreSessao() {
@@ -109,30 +129,11 @@ public class CarterinhaControle implements Serializable {
         }
     }
 
-    public void pesquisarAluno() {
-        AlunoDaoImpl alunoDaoImpl = new AlunoDaoImpl();
-        try {
-            abreSessao();
-
-            if (!pesqAluno.equals("")) {
-                alunos = alunoDaoImpl.pesquisaPorNome(pesqAluno, sessao);
-            } else {
-                Mensagem.mensagemError("Erro ao pesquisar o campo abaixo é obrigatorio");
-            }
-
-        } catch (HibernateException e) {
-            System.err.println("Erro ao pesquisar Aluno");
-        } finally {
-            sessao.close();
-        }
-    }
-
     public void limpar() {
         carterinha = new Carterinha();
         curs = new Curso();
+        aluno = new Aluno();
     }
-
-  
 
     public void excluir() {
         carterinha = modelCarterinhas.getRowData();
@@ -151,7 +152,15 @@ public class CarterinhaControle implements Serializable {
     public void salvar() {
         try {
             abreSessao();
+
+            String[] textoSeparado = nome.split("cpf: ");
+            aluno.setCpf(textoSeparado[1]);
+            AlunoDao alunoDao = new AlunoDaoImpl();
+            aluno = (Aluno) alunoDao.pesqPorNomeOuCpf("", aluno.getCpf(), sessao);
+            
+            
             carterinha.setCurso(curs);
+            carterinha.setAluno(aluno);
             carterinhaDao.salvarOuAlterar(carterinha, sessao);
             Mensagem.salvar("Cartetinha ");
             carterinha = null;
@@ -182,7 +191,7 @@ public class CarterinhaControle implements Serializable {
             CursoDao cursoDao = new CursoDaoImpl();
             todosPerfis = cursoDao.listaTodos(sessao);
             todosPerfis.stream().forEach((perf) -> {
-                cursos.add(new SelectItem(perf.getId(), perf.getCurso()));
+                cursos.add(new SelectItem(perf.getId(), perf.getNome()));
             });
         } catch (HibernateException hi) {
             System.out.println("Erro ao carregar combo curso " + hi.getMessage());
@@ -253,10 +262,6 @@ public class CarterinhaControle implements Serializable {
         return modelCarterinhas;
     }
 
-    public void setModelCarterinhas(DataModel<Carterinha> modelCarterinhas) {
-        this.modelCarterinhas = modelCarterinhas;
-    }
-
     public List<Carterinha> getCarterinhas() {
         return carterinhas;
     }
@@ -281,12 +286,11 @@ public class CarterinhaControle implements Serializable {
         this.cursos = cursos;
     }
 
-    public String getPesqAluno() {
-        return pesqAluno;
+    public String getNome() {
+        return nome;
     }
 
-    public void setPesqAluno(String pesqAluno) {
-        this.pesqAluno = pesqAluno;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
-
 }
