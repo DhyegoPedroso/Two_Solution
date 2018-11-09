@@ -41,7 +41,7 @@
                              ui-grid-col-8" styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="curso_pesquisa" value="Curso:" />
-                    <p:inputText id="curso_pesquisa" value="#{cursoC.curso.curso}"  />
+                    <p:inputText id="curso_pesquisa" value="#{cursoC.curso.nome}"  />
                     <p:spacer />
 
                 </p:panelGrid>
@@ -52,7 +52,7 @@
                              currentPageReportTemplate="[ {currentPage} de {totalPages}  ]"
                              rowsPerPageTemplate="5,10,15">
                     <p:column headerText="Curso">
-                        <h:outputText value="#{curso.curso}" />
+                        <h:outputText value="#{curso.nome}" />
                     </p:column>
                     <p:column headerText="Sigla">
                         <h:outputText value="#{curso.sigla}" />
@@ -88,7 +88,7 @@
                              styleClass="painel_grid_noborder" >
 
                     <p:outputLabel for="curso" value="Curso :" />
-                    <p:inputText id="curso" value="#{cursoC.curso.curso}" required="true" size="40" style="width: 100%; max-width: 600px;"/>
+                    <p:inputText id="curso" value="#{cursoC.curso.nome}" required="true" size="40" style="width: 100%; max-width: 600px;"/>
 
                     <p:outputLabel for="sigla" value="Sigla :" />
                     <p:inputText id="sigla" value="#{cursoC.curso.sigla}"  style="width: 100%; max-width: 50px;"/>
