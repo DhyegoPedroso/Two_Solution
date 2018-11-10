@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -105,6 +106,7 @@ public class CarterinhaControle implements Serializable {
         isMostra_toolbar();
         carterinha = modelCarterinhas.getRowData();
         curs = carterinha.getCurso();
+        aluno = carterinha.getAluno();
     }
 
     public void carregarAluno() {
@@ -122,6 +124,10 @@ public class CarterinhaControle implements Serializable {
                 Mensagem.mensagemError("Erro ao pesquisar um dos campos abaixo é obrigatorio");
             }
 
+            modelCarterinhas = new ListDataModel(carterinhas);
+            pesqNome = null;
+            pesqMatricula = null;
+            
         } catch (HibernateException e) {
             System.err.println("Erro ao pesquisar Carterinha");
         } finally {
