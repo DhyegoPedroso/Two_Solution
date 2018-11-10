@@ -134,6 +134,21 @@ public class UsuarioControle implements Serializable {
         }
     }
 
+    /**
+      public class ConvertPasswordToMD5 {
+ 
+    public static String convertPasswordToMD5(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+ 
+        BigInteger hash = new BigInteger(1, md.digest(password.getBytes()));
+ 
+        return String.format("%32x";, hash);
+    }
+ 
+}
+     */
+    
+    
     public void salvar() {
         usuario.setPerfil(perfil);
         usuarioDao = new UsuarioDaoImpl();
