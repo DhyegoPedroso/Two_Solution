@@ -71,7 +71,6 @@ public class EquipamentoControle {
         try {
             abreSessao();
             comboSala = new ArrayList();
-
             SalaDao salaDao = new SalaDaoImpl();
             todosPerfis = salaDao.listaTodos(sessao);
             todosPerfis.stream().forEach((perf) -> {
