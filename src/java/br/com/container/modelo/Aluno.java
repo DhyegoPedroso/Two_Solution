@@ -15,13 +15,15 @@ import javax.persistence.Table;
 public class Aluno extends Pessoa implements Serializable {
 
     private String cpf;
+    private String matricula;
 
     public Aluno() {
     }
 
-    public Aluno(String cpf, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp) {
+    public Aluno(String matricula, String cpf, Long id, String nome, String email, String foneFixo, String foneMovel, Boolean whatsapp) {
         super(id, nome, email, foneFixo, foneMovel, whatsapp);
         this.cpf = cpf;
+        this.matricula = matricula;
     }
 
     public String getCpf() {
@@ -30,6 +32,14 @@ public class Aluno extends Pessoa implements Serializable {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
 }

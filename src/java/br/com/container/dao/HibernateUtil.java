@@ -8,6 +8,7 @@ package br.com.container.dao;
 import br.com.container.modelo.Agenda;
 import br.com.container.modelo.Aluno;
 import br.com.container.modelo.Atividade;
+import br.com.container.modelo.Carterinha;
 import br.com.container.modelo.Curso;
 import br.com.container.modelo.DiaDaSemana;
 import br.com.container.modelo.Disciplina;
@@ -34,6 +35,7 @@ import org.hibernate.service.ServiceRegistry;
  * @author silvio
  */
 public class HibernateUtil {
+
     private static final SessionFactory sessionFactory;
 
     static {
@@ -57,13 +59,13 @@ public class HibernateUtil {
             cfg.addAnnotatedClass(Empresa.class);
             cfg.addAnnotatedClass(Aluno.class);
             cfg.addAnnotatedClass(Equipamento.class);
-            
+            cfg.addAnnotatedClass(Carterinha.class);
 
             cfg.configure("/br/com/container/dao/hibernate.cfg.xml");
 
-            ServiceRegistry serviceRegistry =
-                    new StandardServiceRegistryBuilder().
-                    applySettings(cfg.getProperties()).build();
+            ServiceRegistry serviceRegistry
+                    = new StandardServiceRegistryBuilder().
+                            applySettings(cfg.getProperties()).build();
 
             sessionFactory = cfg.buildSessionFactory(serviceRegistry);
 

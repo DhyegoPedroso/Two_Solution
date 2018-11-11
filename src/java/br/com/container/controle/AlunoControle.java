@@ -4,8 +4,11 @@ import br.com.container.dao.AlunoDao;
 import br.com.container.dao.AlunoDaoImpl;
 import br.com.container.dao.HibernateUtil;
 import br.com.container.modelo.Aluno;
+import br.com.container.modelo.Carterinha;
 import br.com.container.modelo.Endereco;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -32,6 +35,10 @@ public class AlunoControle implements Serializable {
     private String pesqNome = "";
     private String pesqCpf = "";
 
+    public AlunoControle() {
+        alunoDao = new AlunoDaoImpl();
+    }
+
     private void abreSessao() {
         if (sessao == null) {
             sessao = HibernateUtil.abreSessao();
@@ -43,6 +50,7 @@ public class AlunoControle implements Serializable {
     public void novo() {
         mostra_toolbar = !mostra_toolbar;
         limpar();
+        gerarMatricula();
     }
 
     public void novaPesquisa() {
@@ -55,15 +63,19 @@ public class AlunoControle implements Serializable {
         limpar();
     }
 
+    public void carregarParaAlterar() {
+        mostra_toolbar = !mostra_toolbar;
+        aluno = modelAlunos.getRowData();
+        endereco = aluno.getEndereco();
+    }
+
     public void pesquisar() {
         alunoDao = new AlunoDaoImpl();
         try {
             abreSessao();
 
-            if (!pesqNome.equals("")) {
-                alunos = alunoDao.pesquisaPorNome(pesqNome, sessao);
-            } else if (!pesqCpf.equals("")) {
-                alunos = alunoDao.pesqPorCpf(pesqCpf, sessao);
+            if (!pesqNome.equals("") || !pesqCpf.equals("")) {
+                alunos = alunoDao.pesqPorNomeOuCpf(pesqNome, pesqCpf, sessao);
             } else {
                 Mensagem.mensagemError("Erro ao Pesquisar\num dos campos abaixo é obrigatorio");
             }
@@ -81,12 +93,6 @@ public class AlunoControle implements Serializable {
     public void limpar() {
         aluno = new Aluno();
         endereco = new Endereco();
-    }
-
-    public void carregarParaAlterar() {
-        mostra_toolbar = !mostra_toolbar;
-        aluno = modelAlunos.getRowData();
-        endereco = aluno.getEndereco();
     }
 
     public void excluir() {
@@ -128,13 +134,64 @@ public class AlunoControle implements Serializable {
             sessao.close();
         }
         limpar();
+        gerarMatricula();
     }
 
-    public void limparTela() {
+    public void gerarMatricula() {
+        alunoDao = new AlunoDaoImpl();
+        abreSessao();
+        String matricula;
+        Long id = alunoDao.ultimoIdAluno(sessao);
+        sessao.close();
+        if (id == null) {
+            matricula = pegarAno() + pegarSemestre() + "0001";
+        } else {
+            matricula = pegarAno() + pegarSemestre() + gerarDigitosFinais(id);
+        }
+        aluno.setMatricula(matricula);
+    }
+
+    public String pegarAno() {
+        SimpleDateFormat ano = new SimpleDateFormat("yyyy");
+        String anoString = ano.format(new Date());
+        return anoString;
+    }
+
+    public String pegarSemestre() {
+        SimpleDateFormat mes = new SimpleDateFormat("MM");
+        int mesInt = Integer.parseInt(mes.format(new Date()));
+        if (mesInt < 7) {
+            mesInt = 1;
+            return 0 + String.valueOf(mesInt);
+        } else {
+            mesInt = 2;
+            return 0 + String.valueOf(mesInt);
+        }
+    }
+
+    public String gerarDigitosFinais(Long id) {
+        alunoDao = new AlunoDaoImpl();
+        abreSessao();
+        aluno = alunoDao.pesquisaEntidadeId(id, sessao);
+        String ano = aluno.getMatricula().substring(0, 4);
+        String semestre = aluno.getMatricula().substring(4, 6);
+        String rand = aluno.getMatricula().substring(6, 10);
         limpar();
+        if (Integer.parseInt(pegarAno()) == Integer.parseInt(ano)) {
+            if (Integer.parseInt(pegarSemestre()) == Integer.parseInt(semestre)) {
+                int digito = Integer.parseInt(rand);
+                digito++;
+                rand = "000" + String.valueOf(digito);
+                return rand;
+            } else {
+                return rand = "0001";
+            }
+        } else {
+            return rand = "0001";
+        }
     }
-
     //getters e setters
+
     public Aluno getAluno() {
         if (aluno == null) {
             aluno = new Aluno();

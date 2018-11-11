@@ -65,23 +65,4 @@ public class ProfessorDaoImpl extends BaseDaoImpl<Professor, Long> implements Pr
         }
         return consulta.list();
     }
-    
-    public static void main(String[] args) {
-        ProfessorDaoImpl impl = new ProfessorDaoImpl();
-        
-        Session session = HibernateUtil.abreSessao();
-        
-        List<Professor> consultas = impl.pesqPorCidadeOuBairro("", "Barreiros", session);
-        
-        for (Professor consulta : consultas) {
-            System.out.println("Nome:" +consulta.getNome());
-            System.out.println("Disciplinas:"+consulta.getDisciplinas());
-            System.out.println("Telefone:"+consulta.getFoneMovel());
-            System.out.println("WhatsApp:"+consulta.getWhatsapp());
-            System.out.println("Bairro:"+consulta.getEndereco().getBairro());
-            System.out.println("Cidade:"+consulta.getEndereco().getCidade());
-        }
-        
-        session.close();
-    }
 }
