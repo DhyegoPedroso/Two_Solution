@@ -14,6 +14,9 @@ import br.com.container.modelo.Perfil;
 import br.com.container.modelo.Usuario;
 import br.com.container.util.GeradorLetraNumero;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -134,29 +137,33 @@ public class UsuarioControle implements Serializable {
         }
     }
 
-    /**
-      public class ConvertPasswordToMD5 {
- 
-    public static String convertPasswordToMD5(String password) throws NoSuchAlgorithmException {
+    
+    private static String convertPasswordToMD5(String senha) throws NoSuchAlgorithmException {
+        String retorno = "";
+        try {
+            
+        
         MessageDigest md = MessageDigest.getInstance("MD5");
- 
-        BigInteger hash = new BigInteger(1, md.digest(password.getBytes()));
- 
-        return String.format("%32x";, hash);
-    }
- 
-}
-     */
+        md.update(senha.getBytes(), 0, senha.length());
+        retorno = new BigInteger(1, md.digest()).toString();
+            
+        } catch (Exception e) {
+            System.out.println("Falha ao criptografar " + e.getMessage());
+        }
+        return retorno;
+        }
     
     
-    public void salvar() {
+    public void salvar() throws NoSuchAlgorithmException {
         usuario.setPerfil(perfil);
         usuarioDao = new UsuarioDaoImpl();
         abreSessao();
         String senha = "12345";
         usuario.setSenha(senha);
+        
         if (usuario.getId() == null) {
             usuario.setEnable(true);
+            usuario.setSenha(convertPasswordToMD5(usuario.getSenha()));
         }
         try {
 
