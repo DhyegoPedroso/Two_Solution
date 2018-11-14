@@ -183,7 +183,6 @@ public class CarterinhaControle implements Serializable {
 
     public void salvar() {
         try {
-
             if (!quemChama) {
                 carregarDadosAluno();
                 abreSessao();
@@ -194,7 +193,6 @@ public class CarterinhaControle implements Serializable {
             } else {
                 abreSessao();
                 carterinha.setCurso(curs);
-                carterinha.setAluno(aluno);
                 carterinhaDao.salvarOuAlterar(carterinha, sessao);
                 Mensagem.salvar("Carterinha ");
             }
