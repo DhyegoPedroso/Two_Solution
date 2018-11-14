@@ -120,11 +120,19 @@ public class ProfessorControle implements Serializable {
     }
 
     public void alterarProf() {
-        mostraToolbar = !mostraToolbar;
         prof = modelProfs.getRowData();
-        prof.getEndereco();
-        parseDisciplinas(prof.getDisciplinas());
-        endereco = prof.getEndereco();
+
+        if (prof.getDisciplinas().equals(";")) {
+            mostraToolbar = !mostraToolbar;
+            prof.getEndereco();
+            prof.setDisciplinas(" ");
+        } else {
+            mostraToolbar = !mostraToolbar;
+            prof.getEndereco();
+            parseDisciplinas(prof.getDisciplinas());
+            endereco = prof.getEndereco();
+        }
+
     }
 
     private String parseDisciplinas() {

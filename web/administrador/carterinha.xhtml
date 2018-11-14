@@ -58,13 +58,11 @@
                     </p:column>
 
                     <p:column headerText="Alterar" class="centralizado tabela_botao_usuario" priority="1" >
-                        <p:commandButton icon="ui-icon-pencil" title="Alterar" process="@this" update="@form" actionListener="#{carterinhaC.carregarParaAlterar()}">
-                            <f:setPropertyActionListener target="#{carterinhaC.carterinha}" value="#{carterinha}"   />          
+                        <p:commandButton icon="ui-icon-pencil" title="Alterar" update="@form" actionListener="#{carterinhaC.carregarParaAlterar()}">
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-trash" actionListener="#{carterinhaC.excluir()}" update="dadosCarterinha" title="Excluir" >
                             <p:confirm header="Confirmação" message="Tem certeza da exclusão?" icon="ui-icon-alert" />
-                            <f:setPropertyActionListener target="#{carterinhaC.carterinha}" value="#{carterinha}"   />
                         </p:commandButton>
 
                     </p:column>
@@ -85,7 +83,7 @@
                 <p:toolbar id="toolbar_salvar" styleClass="toolbar">
 
                     <p:toolbarGroup  >
-                        <p:commandButton value="Salvar" action="#{carterinhaC.salvar()}" update="aba_alterar" />
+                        <p:commandButton value="Salvar" action="#{carterinhaC.salvar()}" update="@form" />
                         <p:separator></p:separator>
                         <p:commandButton value="Cancelar" actionListener="#{carterinhaC.novaPesquisa}" immediate="true"
                                          update="@form" global="false" />
@@ -100,7 +98,7 @@
 
                         <p:outputLabel for="nome" value="Nome:" />
                         <p:autoComplete id="nome"  forceSelection="true"  minQueryLength="4" 
-                                        value="#{carterinhaC.nome}" completeMethod="#{carterinhaC.completeAluno}"/>
+                                        value="#{carterinhaC.aluno.nome}" completeMethod="#{carterinhaC.completeAluno}"/>
 
                         <p:outputLabel for="validade" value="Validade:" />
                         <p:outputLabel id="validade" value="#{carterinhaC.carterinha.validade}" style="width: 50%; max-width: 600px;">

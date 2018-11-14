@@ -38,7 +38,6 @@ public class CarterinhaControle implements Serializable {
     private Carterinha carterinha;
     private Curso curs;
     private Aluno aluno;
-    private String nome;
 
     private DataModel<Carterinha> modelCarterinhas;
     private List<Carterinha> carterinhas;
@@ -46,7 +45,7 @@ public class CarterinhaControle implements Serializable {
     private List<Aluno> alunos;
     private List<SelectItem> cursos;
 
-    private boolean mostra_toolbar;
+    private boolean mostra_toolbar, quemChama;
     private String pesqNome = "";
     private String pesqMatricula = "";
 
@@ -57,25 +56,6 @@ public class CarterinhaControle implements Serializable {
 
     public CarterinhaControle() {
         carterinhaDao = new CarterinhaDaoImpl();
-    }
-
-    public List<String> completeAluno(String query) {
-        abreSessao();
-        List<String> autoCompletes = new ArrayList<>();
-        try {
-            AlunoDao alunoDao = new AlunoDaoImpl();
-            alunos = alunoDao.pesquisaPorNome(query, sessao);
-
-            for (Aluno aluno1 : alunos) {
-                autoCompletes.add(aluno1.getNome() + " cpf: " + aluno1.getCpf());
-            }
-
-        } catch (HibernateException e) {
-            System.err.println("Erro ao pesquisar aluno");
-        } finally {
-            sessao.close();
-        }
-        return autoCompletes;
     }
 
     private void abreSessao() {
@@ -103,7 +83,8 @@ public class CarterinhaControle implements Serializable {
     }
 
     public void carregarParaAlterar() {
-        isMostra_toolbar();
+        mostra_toolbar = !mostra_toolbar;
+        quemChama = !quemChama;
         carterinha = modelCarterinhas.getRowData();
         curs = carterinha.getCurso();
         aluno = carterinha.getAluno();
@@ -127,7 +108,7 @@ public class CarterinhaControle implements Serializable {
             modelCarterinhas = new ListDataModel(carterinhas);
             pesqNome = null;
             pesqMatricula = null;
-            
+
         } catch (HibernateException e) {
             System.err.println("Erro ao pesquisar Carterinha");
         } finally {
@@ -155,13 +136,32 @@ public class CarterinhaControle implements Serializable {
         }
     }
 
+    public List<String> completeAluno(String query) {
+        abreSessao();
+        List<String> autoCompletes = new ArrayList<>();
+        try {
+            AlunoDao alunoDao = new AlunoDaoImpl();
+            alunos = alunoDao.pesquisaPorNome(query, sessao);
+
+            for (Aluno aluno1 : alunos) {
+                autoCompletes.add(aluno1.getNome() + " cpf: " + aluno1.getCpf());
+            }
+
+        } catch (HibernateException e) {
+            System.err.println("Erro ao pesquisar aluno");
+        } finally {
+            sessao.close();
+        }
+        return autoCompletes;
+    }
+
     public void carregarDadosAluno() {
 
         try {
             abreSessao();
             AlunoDao alunoDao = new AlunoDaoImpl();
 
-            String[] textoSeparado = nome.split("cpf: ");
+            String[] textoSeparado = aluno.getNome().split("cpf: ");
             aluno.setCpf(textoSeparado[1]);
 
             alunos = alunoDao.pesqPorNomeOuCpf("", aluno.getCpf(), sessao);
@@ -183,16 +183,22 @@ public class CarterinhaControle implements Serializable {
 
     public void salvar() {
         try {
-            carregarDadosAluno();
-            abreSessao();
 
-            carterinha.setCurso(curs);
-            carterinha.setAluno(aluno);
-            carterinhaDao.salvarOuAlterar(carterinha, sessao);
-            Mensagem.salvar("Cartetinha ");
-            carterinha = null;
-            curs = null;
-            aluno = null;
+            if (!quemChama) {
+                carregarDadosAluno();
+                abreSessao();
+                carterinha.setCurso(curs);
+                carterinha.setAluno(aluno);
+                carterinhaDao.salvarOuAlterar(carterinha, sessao);
+                Mensagem.salvar("Carterinha ");
+            } else {
+                abreSessao();
+                carterinha.setCurso(curs);
+                carterinha.setAluno(aluno);
+                carterinhaDao.salvarOuAlterar(carterinha, sessao);
+                Mensagem.salvar("Carterinha ");
+            }
+
         } catch (HibernateException e) {
             System.err.println("Erro ao salvar Carterinha");
         } finally {
@@ -314,11 +320,11 @@ public class CarterinhaControle implements Serializable {
         this.cursos = cursos;
     }
 
-    public String getNome() {
-        return nome;
+    public boolean isQuemChama() {
+        return quemChama;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setQuemChama(boolean quemChama) {
+        this.quemChama = quemChama;
     }
 }
