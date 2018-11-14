@@ -13,6 +13,7 @@ import br.com.container.dao.SalaDaoImpl;
 import br.com.container.modelo.Equipamento;
 import br.com.container.modelo.Sala;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -56,6 +57,7 @@ public class EquipamentoControle {
 
     public void novo() {
         mostra_toolbar = !mostra_toolbar;
+        salvarComDataAtual();
     }
 
     public void novaPesquisa() {
@@ -64,6 +66,10 @@ public class EquipamentoControle {
 
     public void preparaAlterar() {
         mostra_toolbar = !mostra_toolbar;
+    }
+    
+    public void salvarComDataAtual(){
+        equipamento.setDataCadastro(new Date());
     }
     
     private void carregaComboSala() {
@@ -98,6 +104,7 @@ public class EquipamentoControle {
 
     public void limpar() {
         equipamento = new Equipamento();
+        salvarComDataAtual();
     }
 
     public void carregarParaAlterar() {

@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
     private String nome;
     @Column(unique = true)
     private String login;
-    @Column(length = 15, nullable = false)
+    @Column(length = 100, nullable = false)
     private String senha;
     private boolean enable;
     

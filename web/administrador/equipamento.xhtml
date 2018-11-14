@@ -102,7 +102,9 @@
                     <p:inputText id="descDefeito" value="#{equipamentoC.equipamento.descricaoDefeito}" style="width: 100%; max-width: 600px;"/>
                     
                     <p:outputLabel for="dataCadastro" value="Data Cadastro :" />
-                    <p:calendar id="dataCadastro" value="#{equipamentoC.equipamento.dataCadastro}" style="width: 100%; max-width: 600px;"/>
+                    <p:outputLabel id="dataCadastro" value="#{equipamentoC.equipamento.dataCadastro}" style="width: 100%; max-width: 600px;">
+                        <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy"/>
+                    </p:outputLabel>
                     
                     <p:outputLabel for="localSala" value="Local - Sala:" />
                     <p:selectOneMenu styleClass="form-control" id="localSala" value="#{equipamentoC.sala.nome}" style="width: 90%; max-width: 580px;">

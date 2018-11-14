@@ -28,7 +28,7 @@ public class Equipamento {
     private String numPatrimonio;
     private String nome;
     private String descricaoDefeito;
-    private Date dataCadastro;
+    private Date dataCadastro = new Date();
     
     public Long getId() {
         return id;
